@@ -2,6 +2,9 @@
 #include <cstring>
 #include <fstream>
 #include <map>
+#include <cctype>
+#include <algorithm>
+
 using namespace std;
 
 string TidyString(string input) {
@@ -14,17 +17,18 @@ string TidyString(string input) {
     if (input.at(0) == '-')
         input.erase(input.begin());
 
+    transform(input.begin(), input.end(), input.begin(), ::tolower);
     return input;
 }
 
-map <string, double>::iterator findMaxVal(map <string, double> source) {
-    auto mapP = source.end();
+map <string, double>::iterator findMaxVal(map <string, double> *source) {
+    auto mapP = (*source).end();
     double max = 0;
 
-    for (auto& it : source)
+    for (auto& it : *source)
         if (it.second > max) {
             max = it.second;
-            mapP = source.find(it.first);
+            mapP = (*source).find(it.first);
         }
     return mapP;
 }
@@ -48,23 +52,14 @@ int main(int argc, char* argv[]) {
         wordC++;
 
         if ((mapP = contentTable.find(buff)) != contentTable.end())
-            (mapP->second)++;
+            mapP->second++;
         else
             contentTable.insert(pair<string, double>(buff, 1.0));
     }
 
-    //TODO output of contentTable
     while (!contentTable.empty()) {
-        //mapP = findMaxVal(contentTable);
-        double max = 0;
-
-        for (auto& it : contentTable)
-            if (it.second > max) {
-                max = it.second;
-                mapP = contentTable.find(it.first);
-            }
+        mapP = findMaxVal(&contentTable);
         fout << mapP->first << ", " << mapP->second << ", " << mapP->second/wordC * 100 << endl;
-        //mapP->second = -1;
         contentTable.erase(mapP);
     }
 
