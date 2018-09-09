@@ -7,7 +7,8 @@
 
 using namespace std;
 
-string TidyString(string input) {
+//Function tidyString removes punctuation marks from the string and converts it into lower case
+string tidyString(string input) {
     int to = input.length();
     for (unsigned int i = 0; i < to; ++i)
         while (i < to && strchr(",.;:()!?'\n", input.at(i)) != nullptr) {
@@ -21,6 +22,7 @@ string TidyString(string input) {
     return input;
 }
 
+//Function findMaxVal returns an iterator, that points at the element of max value
 map <string, double>::iterator findMaxVal(map <string, double> *source) {
     auto mapP = (*source).end();
     double max = 0;
@@ -46,9 +48,10 @@ int main(int argc, char* argv[]) {
     int wordC = 0;
     string buff;
 
+    //Going through the input file, counting number of words in it
     while (!fin.eof()) {
         getline(fin, buff, ' ');
-        buff = TidyString(buff);
+        buff = tidyString(buff);
 
         if (!buff.empty()) {
             wordC++;
@@ -59,6 +62,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    //Printing out content of map in decreasing order by value
     while (!contentTable.empty()) {
         mapP = findMaxVal(&contentTable);
         fout << mapP->first << ", " << mapP->second << ", " << mapP->second/wordC * 100 << "%" << endl;
