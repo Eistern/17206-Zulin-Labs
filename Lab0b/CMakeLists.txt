@@ -3,4 +3,4 @@ project(Lab0b)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Lab0b main.cpp)
+add_executable(Lab0b main.cpp wordCounter.cpp wordCounter.h stringParser.h)
