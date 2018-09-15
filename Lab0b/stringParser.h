@@ -9,6 +9,7 @@
 class stringParser {
     std::string forbidden;
 public:
+    //Default constructor makes all of punctuation marks forbidden
     stringParser () {
         forbidden = ",.;:()!?'\"\n";
     }
@@ -21,7 +22,7 @@ public:
                 input.erase(input.begin() + i);
                 to = input.length();
             }
-        if (input.at(0) == '-')
+        while (input.at(0) == '-')
             input.erase(input.begin());
 
         transform(input.begin(), input.end(), input.begin(), ::tolower);

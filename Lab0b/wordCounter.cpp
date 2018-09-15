@@ -21,6 +21,6 @@ void wordCounter::printMap(std::ostream &fout) {
     for (auto& it : wordMap)
         outputFormat.insert(std::pair<int, std::string>(it.second, it.first));
 
-    for (auto& it : outputFormat)
-        fout << it.second << ", " << it.first << ", " << (double)it.first/wordNumber << std::endl;
+    for (auto it = outputFormat.rbegin()++; it != outputFormat.rend(); it++)
+        fout << it->second << ", " << it->first << ", " << (double)it->first/wordNumber * 100 << "%" << std::endl;
 }

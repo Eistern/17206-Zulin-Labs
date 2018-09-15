@@ -4,15 +4,25 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        std::cout << "Wrong number of arguments" << std::endl;
-        return 0;
+        std::cerr << "Wrong number of arguments" << std::endl;
+        return 1;
     }
-    std::ifstream fin(argv[1]);
-    std::ofstream fout(argv[2]);
 
-    wordCounter _new;
-    _new.parseFile(fin);
-    _new.printMap(fout);
+    std::ifstream fin(argv[1]);
+    if (!fin.is_open()) {
+        std::cerr << "Error in opening file" << std::endl;
+        return 2;
+    }
+
+    std::ofstream fout(argv[2]);
+    if (!fout.is_open()) {
+        std::cerr << "Error in opening file" << std::endl;
+        return 2;
+    }
+
+    wordCounter counter;
+    counter.parseFile(fin);
+    counter.printMap(fout);
 
     fout.close();
     fin.close();
