@@ -3,4 +3,4 @@ project(Lab1)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Lab1 main.cpp triSet.cpp triSet.h)
+add_executable(Lab1 main.cpp tritSet.cpp tritSet.h Trit.cpp Trit.h)

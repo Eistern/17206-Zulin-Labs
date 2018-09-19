@@ -1,5 +1,5 @@
 #include <iostream>
-#include "triSet.h"
+#include "tritSet.h"
 
 int main() {
 
