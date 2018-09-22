@@ -21,13 +21,21 @@ Trit operator|(Trit &trit1, Trit &trit2) {
 }
 
 Trit operator~(Trit &trit) {
-    return static_cast<Trit>(static_cast<int>(trit) * -1);
+    if (trit == Trit::FALSE)
+        return Trit::TRUE;
+
+    if (trit == Trit::TRUE)
+        return Trit::FALSE;
+
+    return Trit::UNKNOWN;
 }
 
-Trit &operator++(Trit &trit) {
-    trit = static_cast<Trit>(static_cast<int>(trit) + 1);
-    if (trit == Trit::TRUE)
-        trit = static_cast<Trit>(static_cast<int>(trit) - 1);
+void bitOperations::setTrit(unsigned int &to, unsigned int pos, Trit value) {
+    to = to & ~((unsigned)3 << (2 * pos));
+    to = to | (static_cast<unsigned int>(value) << (2 * pos));
+}
 
-    return trit;
-};
+Trit bitOperations::getTrit(unsigned int from, unsigned int pos) {
+    unsigned int value = (from >> (pos * 2)) % 4;
+    return static_cast<Trit>(value);
+}
