@@ -3,6 +3,7 @@
 
 #include "Trit.h"
 #include <vector>
+#include <unordered_map>
 
 using namespace bitOperations;
 
@@ -20,6 +21,10 @@ public:
     unsigned int capacity() {
         return sizeof(*this) * 8;
     }
+
+    std::size_t length();
+    std::size_t cardinality(Trit value);
+//    unordered_map<Trit, int, std::hash<int>> cardinality();
 
     tritSet operator[] (unsigned int index);
     tritSet& operator= (Trit value);
