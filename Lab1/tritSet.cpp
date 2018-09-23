@@ -36,9 +36,11 @@ tritSet tritSet::operator[] (unsigned int index) {
     return *this;
 }
 
-tritSet& tritSet::operator= (const Trit value) {
+tritSet& tritSet::operator= (Trit value) {
     int i = this->findOperatingIndex();
-    setTrit((this->set)[i / 16], (unsigned)(i % 16), value);
+    unsigned int buff = this->set[i / 16];
+    setTrit(buff, (unsigned)(i % 16), value);
+    this->set[i / 16] = buff;
     return *this;
 }
 
