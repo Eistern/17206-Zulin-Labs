@@ -89,7 +89,6 @@ void tritSet::trim(size_t lastIndex) {
         for (int i = lastIndex; i < length(); i++)
             (*this)[i] = Trit::UNKNOWN;
     }
-    resizeSet(lastIndex);
 }
 
 std::size_t tritSet::length() {
