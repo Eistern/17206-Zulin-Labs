@@ -13,7 +13,7 @@ Trit operator~ (Trit &trit);
 
 namespace bitOperations {
     void setTrit (unsigned int &to, unsigned int pos, Trit value);
-    Trit getTrit (unsigned int from, unsigned int pos);
+    const Trit getTrit (unsigned int from, unsigned int pos);
 }
 
 #endif //LAB1_TRIT_H

@@ -12,9 +12,21 @@ class tritSet {
     Trit operatingTrit_;
     unsigned int defaultSize_;
 public:
+    class placeHolder {
+        tritSet* from_;
+        unsigned int shift_;
+    public:
+        placeHolder(tritSet* setPointer, unsigned int shear) {
+            from_ = setPointer;
+            shift_ = shear;
+        }
+        operator Trit() const;
+        tritSet& operator=(Trit input);
+    };
+
     explicit tritSet(unsigned int size) {
-        set = std::vector<unsigned int> (size);
-        defaultSize_ = size;
+        set = std::vector<unsigned int> (size / 16 + 1);
+        defaultSize_ = size / 16 + 1;
         operatingTrit_ = Trit::UNKNOWN;
     }
 
@@ -26,9 +38,7 @@ public:
     std::size_t cardinality(Trit value);
 //    unordered_map<Trit, int, std::hash<int>> cardinality();
 
-    tritSet operator[] (unsigned int index);
-    tritSet& operator= (Trit value);
-    bool operator== (Trit value);
+    placeHolder operator[] (unsigned int index);
     tritSet operator& (tritSet &unit2);
     tritSet operator| (tritSet &unit2);
     tritSet operator~ ();
@@ -38,7 +48,6 @@ private:
         defaultSize_ = set.size();
         operatingTrit_ = Trit::UNKNOWN;
     }
-    unsigned int findOperatingIndex();
 };
 
 

@@ -28,28 +28,8 @@ std::size_t tritSet::cardinality(Trit value) {
 //    return result;
 //}
 
-tritSet tritSet::operator[] (unsigned int index) {
-    unsigned int _new = this->set[index / 16];
-    this->operatingTrit_ = getTrit(_new, index % 16);
-    setTrit(_new, index % 16, static_cast<Trit>(3));
-    this->set[index / 16] = _new;
-    return *this;
-}
-
-tritSet& tritSet::operator= (Trit value) {
-    int i = this->findOperatingIndex();
-    unsigned int buff = this->set[i / 16];
-    setTrit(buff, (unsigned)(i % 16), value);
-    this->set[i / 16] = buff;
-    return *this;
-}
-
-bool tritSet::operator== (Trit value) {
-    unsigned int index = this->findOperatingIndex();
-    Trit buff = this->operatingTrit_;
-    setTrit(this->set[index / 16], index % 16, this->operatingTrit_);
-    this->operatingTrit_ = Trit::UNKNOWN;
-    return buff == value;
+tritSet::placeHolder tritSet::operator[] (unsigned int index) {
+    return {this, index};
 }
 
 tritSet tritSet::operator& (tritSet &unit2) {
@@ -103,12 +83,11 @@ tritSet tritSet::operator~ () {
     return tritSet(_new);
 }
 
-unsigned int tritSet::findOperatingIndex() {
-    unsigned int i = 0;
-    while (static_cast<unsigned int>(this->set[i / 16]) << (i % 16 * 2) % 4 != 3) {
-        ++i;
-        if (i >= this->set.size() * 16)
-            throw (std::exception());
-    }
-    return i;
+tritSet::placeHolder::operator Trit() const{
+    return getTrit(from_->set[shift_ / 16], shift_ % 16);
+}
+
+tritSet& tritSet::placeHolder::operator=(Trit input) {
+    setTrit(from_->set[shift_ / 16], shift_ % 16, input);
+    return *from_;
 }
