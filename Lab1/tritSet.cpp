@@ -19,8 +19,8 @@ std::size_t tritSet::cardinality(Trit value) {
     return result;
 }
 
-//unordered_map<Trit, int, std::hash<int>> tritSet::cardinality() {
-//    unordered_map<Trit, int, std::hash<int>> result;
+//std::unordered_map<Trit, int, std::hash<int>> tritSet::cardinality() {
+//    std::unordered_map<Trit, int, std::hash<int>> result{};
 //    result.emplace(Trit::FALSE, this->cardinality(Trit::FALSE));
 //    result.emplace(Trit::UNKNOWN, this->cardinality(Trit::UNKNOWN));
 //    result.emplace(Trit::TRUE, this->cardinality(Trit::TRUE));
@@ -87,7 +87,7 @@ tritSet::placeHolder::operator Trit() const{
     return getTrit(from_->set[shift_ / 16], shift_ % 16);
 }
 
-tritSet& tritSet::placeHolder::operator=(Trit input) {
+tritSet& tritSet::placeHolder::operator=(Trit input) { // NOLINT
     setTrit(from_->set[shift_ / 16], shift_ % 16, input);
     return *from_;
 }

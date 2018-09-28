@@ -20,8 +20,8 @@ public:
             from_ = setPointer;
             shift_ = shear;
         }
-        operator Trit() const;
-        tritSet& operator=(Trit input);
+        operator Trit() const;// NOLINT
+        tritSet& operator=(Trit input);// NOLINT
     };
 
     explicit tritSet(unsigned int size) {
