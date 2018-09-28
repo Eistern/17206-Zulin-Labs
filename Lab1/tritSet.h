@@ -30,10 +30,9 @@ public:
         operatingTrit_ = Trit::UNKNOWN;
     }
 
-    unsigned int capacity() {
-        return sizeof(*this) * 8;
-    }
-
+    void shrink();
+    void trim(size_t lastIndex);
+    size_t capacity();
     std::size_t length();
     std::size_t cardinality(Trit value);
 //    unordered_map<Trit, int, std::hash<int>> cardinality();
@@ -48,6 +47,8 @@ private:
         defaultSize_ = set.size();
         operatingTrit_ = Trit::UNKNOWN;
     }
+
+    void resizeSet(unsigned int to);
 };
 
 
