@@ -1,6 +1,6 @@
 #include "Trit.h"
 
-Trit operator&(Trit &trit1, Trit &trit2) {
+Trit operator&(const Trit& trit1, const Trit& trit2) {
     if (trit1 == Trit::FALSE || trit2 == Trit::FALSE)
         return Trit::FALSE;
 
@@ -10,7 +10,7 @@ Trit operator&(Trit &trit1, Trit &trit2) {
     return Trit::TRUE;
 }
 
-Trit operator|(Trit &trit1, Trit &trit2) {
+Trit operator|(const Trit& trit1, const Trit& trit2) {
     if (trit1 == Trit::TRUE || trit2 == Trit::TRUE)
         return Trit::TRUE;
 
@@ -20,7 +20,7 @@ Trit operator|(Trit &trit1, Trit &trit2) {
     return Trit::FALSE;
 }
 
-Trit operator~(Trit &trit) {
+Trit operator~(const Trit& trit) {
     if (trit == Trit::FALSE)
         return Trit::TRUE;
 
@@ -31,11 +31,13 @@ Trit operator~(Trit &trit) {
 }
 
 void bitOperations::setTrit(unsigned int &to, unsigned int pos, Trit value) {
+    //Replace the changing trit with 0b11
     to = to & ~((unsigned)3 << (2 * pos));
+    //Set the trit into position
     to = to | (static_cast<unsigned int>(value) << (2 * pos));
 }
 
-const Trit bitOperations::getTrit(unsigned int from, unsigned int pos) {
+Trit bitOperations::getTrit(unsigned int from, unsigned int pos){
     unsigned int value = (from >> (pos * 2)) % 4;
     return static_cast<Trit>(value);
 }
