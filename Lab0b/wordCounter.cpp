@@ -5,9 +5,11 @@ void wordCounter::parseFile(std::istream &fin) {
     stringParser filter;
 
     while (!fin.eof()) {
+        //Get next string from fin and clear it
         getline(fin, buff, ' ');
         buff = filter.tidyString(buff);
 
+        //If the string isn't empty, add it to the wordMap
         if (!buff.empty()) {
             wordNumber++;
             wordMap[buff]++;
@@ -18,6 +20,7 @@ void wordCounter::parseFile(std::istream &fin) {
 void wordCounter::printMap(std::ostream &fout) {
     std::multimap<int, std::string> outputFormat;
 
+    //Creating multimap for output
     for (auto& it : wordMap)
         outputFormat.insert(std::pair<int, std::string>(it.second, it.first));
 
