@@ -5,11 +5,11 @@ void wordCounter::parseFile(std::istream &fin) {
     stringParser filter;
 
     while (!fin.eof()) {
-        //Get next string from fin and clear it
+        //Get next string from fin and parse it
         getline(fin, buff, '\n');
         filter.parseString(buff);
 
-        //If the string isn't empty, add it to the wordMap
+        //While filter isn't empty, add it to the wordMap
         while (!filter.isEmpty()) {
             buff = filter.getString();
             wordNumber++;
