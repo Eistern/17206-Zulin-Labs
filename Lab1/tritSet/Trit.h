@@ -10,12 +10,4 @@ Trit operator& (const Trit& trit1, const Trit& trit2);
 Trit operator| (const Trit& trit1, const Trit& trit2);
 Trit operator~ (const Trit& trit);
 
-namespace bitOperations {
-    //Function setTrit sets Trit "value" into uint "to"
-    void setTrit (unsigned int &to, unsigned int pos, Trit value);
-
-    //Function getTrit gets value of Trit from position "pos"
-    Trit getTrit (unsigned int from, unsigned int pos);
-}
-
 #endif //LAB1_TRIT_H

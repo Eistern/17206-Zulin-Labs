@@ -29,15 +29,3 @@ Trit operator~(const Trit& trit) {
 
     return Trit::UNKNOWN;
 }
-
-void bitOperations::setTrit(unsigned int &to, unsigned int pos, Trit value) {
-    //Replace the changing trit with 0b11
-    to = to & ~((unsigned)3 << (2 * pos));
-    //Set the trit into position
-    to = to | (static_cast<unsigned int>(value) << (2 * pos));
-}
-
-Trit bitOperations::getTrit(unsigned int from, unsigned int pos){
-    unsigned int value = (from >> (pos * 2)) % 4;
-    return static_cast<Trit>(value);
-}

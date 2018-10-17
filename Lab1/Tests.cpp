@@ -47,6 +47,9 @@ TEST(tritSet_basic, access_and_input) {
     _test[11] = Trit::TRUE;
     EXPECT_EQ(_test[11], Trit::TRUE);
     EXPECT_EQ(_test[10], Trit::FALSE);
+
+    const tritSet _test2(10);
+    EXPECT_EQ(_test2[5], Trit::UNKNOWN);
 }
 
 TEST(tritSet_basic, length) {

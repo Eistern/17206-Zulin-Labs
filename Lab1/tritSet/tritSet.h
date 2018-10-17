@@ -5,20 +5,19 @@
 #include <vector>
 #include <unordered_map>
 
-using namespace bitOperations;
-
 class tritSet {
     std::vector<unsigned int> _set;
     unsigned int _defaultSize;
 public:
     class placeHolder {
+        friend class tritSet;
         tritSet* _from;
         unsigned int _shift;
-    public:
         placeHolder(tritSet* setPointer, unsigned int shear) {
             _from = setPointer;
             _shift = shear;
         }
+    public:
         //Operator Trit() used to read Trit from index "shift"
         operator Trit() const;// NOLINT
         //Operator = used to set new value on index "shift"
@@ -47,6 +46,7 @@ public:
 
     //Operator[] creates an object of placeHolder, which could be used to gain access to the element of tritSet
     placeHolder operator[] (unsigned int index);
+    Trit operator[] (unsigned int index) const;
 
     //Logic operators overload for tritSet
     tritSet operator& (tritSet &unit2);
@@ -62,6 +62,10 @@ private:
 
     //Function _resizeSet changes capacity of tritSet to fit "to" number of elements
     void _resizeSet(unsigned int to);
+    //Function setTrit sets Trit "value" into uint "to"
+    static void setTrit (unsigned int &to, unsigned int pos, Trit value);
+    //Function getTrit gets value of Trit from position "pos"
+    static Trit getTrit (unsigned int from, unsigned int pos);
 };
 
 

@@ -4,6 +4,12 @@ tritSet::placeHolder tritSet::operator[] (unsigned int index) {
     return {this, index};
 }
 
+Trit tritSet::operator[](unsigned int index) const {
+    if (index >= this->length())
+        return Trit::UNKNOWN;
+    return getTrit(this->_set[index / 16], index % 16);
+}
+
 tritSet tritSet::operator& (tritSet &unit2) {
     unsigned int max = this->_set.size() > unit2._set.size() ? this->_set.size() : unit2._set.size();
     unsigned int min = this->_set.size() > unit2._set.size() ? unit2._set.size() : this->_set.size();
@@ -115,4 +121,16 @@ std::unordered_map<Trit, int, std::hash<Trit>> tritSet::cardinality() const{
     result.emplace(Trit::TRUE, this->cardinality(Trit::TRUE));
 
     return result;
+}
+
+void tritSet::setTrit(unsigned int &to, unsigned int pos, Trit value) {
+    //Replace the changing trit with 0b11
+    to = to & ~((unsigned)3 << (2 * pos));
+    //Set the trit into position
+    to = to | (static_cast<unsigned int>(value) << (2 * pos));
+}
+
+Trit tritSet::getTrit(unsigned int from, unsigned int pos) {
+    unsigned int value = (from >> (pos * 2)) % 4;
+    return static_cast<Trit>(value);
 }
