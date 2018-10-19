@@ -1,8 +1,10 @@
 #include <iostream>
 #include <fstream>
-#include <Calc.h>
+#include "Calc.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Calc _new;
+    _new.run(std::cin, std::cout);
+    std::cout << _new.peek();
     return 0;
 }
