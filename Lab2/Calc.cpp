@@ -2,6 +2,7 @@
 #include "basicCommands.h"
 #include "creators.h"
 #include "Parser.h"
+#include "CommandExeptions.h"
 
 void Calc::run(std::istream &fin, std::ostream &fout) {
     Parser _streamListener;
@@ -12,7 +13,13 @@ void Calc::run(std::istream &fin, std::ostream &fout) {
         cmdName = _streamListener.getCmdName(fin);
         if (cmdName.front() != '#') {
             Command *_newCommand = _newCreator.factoryMethod(cmdName);
-            _newCommand->execute(this, _streamListener.getArguments());
+            try {
+                _newCommand->execute(this, _streamListener.getArguments());
+            }
+            catch (CommandExeptions &s) {
+                std::cout << s.what() << std::endl;
+            }
+
             std::cout << "Command " << cmdName << " executed" << std::endl;
             delete(_newCommand);
         }

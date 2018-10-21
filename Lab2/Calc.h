@@ -1,8 +1,6 @@
 #ifndef LAB2_CALC_H
 #define LAB2_CALC_H
 
-#include <cstdlib>
-#include <cmath>
 #include <stack>
 #include <map>
 
