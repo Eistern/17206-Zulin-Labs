@@ -1,23 +1,26 @@
 #include "basicCommands.h"
 
-void commandDEFINE::execute(Calc *src, std::list<std::string> arg) {
+void CommandDEFINE::execute(Calc *src, std::list<std::string> arg) {
     if (arg.size() != 2)
         return;
 
     double _newDefine = strtod(arg.back().c_str(), nullptr);
     arg.pop_back();
     std::string _defineKey = arg.back();
+
+    if (src->isDefined(_defineKey))
+        return;
     src->addDeifne(_defineKey, _newDefine);
 }
 
-void commandPOP::execute(Calc *src, std::list<std::string> arg) {
-    if (arg.size() != 0)
+void CommandPOP::execute(Calc *src, std::list<std::string> arg) {
+    if (!arg.empty())
         return;
 
     src->pop();
 }
 
-void commandPUSH::execute(Calc *src, std::list<std::string> arg) {
+void CommandPUSH::execute(Calc *src, std::list<std::string> arg) {
     if (arg.size() != 1)
         return;
 
@@ -27,10 +30,19 @@ void commandPUSH::execute(Calc *src, std::list<std::string> arg) {
         src->push(strtod(arg.front().c_str(), nullptr));
 }
 
-void commandADD::execute(Calc *src, std::list<std::string> arg) {
+void CommandPRINT::execute(Calc *src, std::list<std::string> arg) {
+    if (src->stackLength() < 1)
+        return;
+    if (!arg.empty())
+        return;
+
+    std::cout << src->peek() << std::endl;
+}
+
+void CommandADD::execute(Calc *src, std::list<std::string> arg) {
     if (src->stackLength() < 2)
         return;
-    if (arg.size() != 0)
+    if (!arg.empty())
         return;
 
     double arg1 = src->pop();
@@ -38,10 +50,10 @@ void commandADD::execute(Calc *src, std::list<std::string> arg) {
     src->push(arg1 + arg2);
 }
 
-void commandSUB::execute(Calc *src, std::list<std::string> arg) {
+void CommandSUB::execute(Calc *src, std::list<std::string> arg) {
     if (src->stackLength() < 2)
         return;
-    if (arg.size() != 0)
+    if (!arg.empty())
         return;
 
     double arg1 = src->pop();
@@ -49,10 +61,10 @@ void commandSUB::execute(Calc *src, std::list<std::string> arg) {
     src->push(arg2 - arg1);
 }
 
-void commandMUL::execute(Calc *src, std::list<std::string> arg) {
+void CommandMUL::execute(Calc *src, std::list<std::string> arg) {
     if (src->stackLength() < 2)
         return;
-    if (arg.size() != 0)
+    if (!arg.empty())
         return;
 
     double arg1 = src->pop();
@@ -60,10 +72,10 @@ void commandMUL::execute(Calc *src, std::list<std::string> arg) {
     src->push(arg1 * arg2);
 }
 
-void commandDIV::execute(Calc *src, std::list<std::string> arg) {
+void CommandDIV::execute(Calc *src, std::list<std::string> arg) {
     if (src->stackLength() < 2)
         return;
-    if (arg.size() != 0)
+    if (!arg.empty())
         return;
 
     double arg1 = src->pop();
@@ -71,10 +83,10 @@ void commandDIV::execute(Calc *src, std::list<std::string> arg) {
     src->push(arg2 / arg1);
 }
 
-void commandSQRT::execute(Calc *src, std::list<std::string> arg) {
+void CommandSQRT::execute(Calc *src, std::list<std::string> arg) {
     if (src->stackLength() < 2)
         return;
-    if (arg.size() != 0)
+    if (!arg.empty())
         return;
 
     double arg1 = src->pop();

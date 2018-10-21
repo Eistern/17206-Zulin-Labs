@@ -3,68 +3,75 @@
 
 #include "basicCommands.h"
 
-class cmdCreator {
-    static const std::map<std::string, cmdCreator*> _creatorArray;
+class CmdCreator {
+    static const std::map<std::string, CmdCreator*> _creatorArray;
 public:
-    command* factoryMethod(const std::string& type) {
+    Command* factoryMethod(const std::string& type) {
         return _creatorArray.at(type)->create();
     }
-    virtual command* create() {};
+    virtual Command* create() {};
 };
 
-class pushCreator : public cmdCreator {
+class PushCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandPUSH;
+    Command* create() override {
+        return new CommandPUSH;
     }
 };
 
-class popCreator : public cmdCreator {
+class PopCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandPOP;
+    Command* create() override {
+        return new CommandPOP;
     }
 };
 
-class addCreator : public cmdCreator {
+class PrintCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandADD;
+    Command* create() override {
+        return new CommandPRINT;
     }
 };
 
-class subCreator : public cmdCreator {
+class AddCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandSUB;
+    Command* create() override {
+        return new CommandADD;
     }
 };
 
-class mulCreator : public cmdCreator {
+class SubCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandMUL;
+    Command* create() override {
+        return new CommandSUB;
     }
 };
 
-class divCreator : public cmdCreator {
+class MulCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandDIV;
+    Command* create() override {
+        return new CommandMUL;
     }
 };
 
-class sqrtCreator : public cmdCreator {
+class DivCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandSQRT;
+    Command* create() override {
+        return new CommandDIV;
     }
 };
 
-class defineCreator : public cmdCreator {
+class SqrtCreator : public CmdCreator {
 public:
-    command* create() override {
-        return new commandDEFINE;
+    Command* create() override {
+        return new CommandSQRT;
+    }
+};
+
+class DefineCreator : public CmdCreator {
+public:
+    Command* create() override {
+        return new CommandDEFINE;
     }
 };
 

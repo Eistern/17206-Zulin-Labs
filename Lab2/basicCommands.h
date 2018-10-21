@@ -2,48 +2,54 @@
 #define LAB2_BASICCOMMANDS_H
 
 #include "Calc.h"
+#include "Parser.h"
+#include <list>
 
-class command {
+class Command {
 public:
     virtual void execute(Calc *src, std::list<std::string> arg) = 0;
 };
 
-class commandDEFINE : public command {
+class CommandDEFINE : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandPOP : public command {
+class CommandPOP : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandPUSH : public command {
+class CommandPUSH : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandADD : public command {
+class CommandPRINT : public Command {
+    void execute(Calc *src, std::list<std::string> arg) override;
+};
+
+class CommandADD : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandSUB : public command {
+class CommandSUB : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandMUL : public command {
+class CommandMUL : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandDIV : public command {
+class CommandDIV : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };
 
-class commandSQRT : public command {
+class CommandSQRT : public Command {
 public:
     void execute(Calc *src, std::list<std::string> arg) override;
 };

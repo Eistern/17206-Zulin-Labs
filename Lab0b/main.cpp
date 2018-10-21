@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     }
 
     wordCounter counter;
-    counter.parseFile(fin);
+    counter.parseFile(std::cin);
     counter.printMap(fout);
 
     fout.close();

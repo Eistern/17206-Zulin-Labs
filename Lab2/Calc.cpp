@@ -1,12 +1,22 @@
 #include "Calc.h"
 #include "basicCommands.h"
 #include "creators.h"
+#include "Parser.h"
 
-void Calc::run(const std::istream &fin, const std::ostream &fout) {
-    //Parse input file, create element of command
-    cmdCreator _newCreator;
-    command* _new = _newCreator.factoryMethod("PUSH");
-    _new->execute(this, {"1"});
+void Calc::run(std::istream &fin, std::ostream &fout) {
+    Parser _streamListener;
+    CmdCreator _newCreator;
+    std::string cmdName;
+
+    while (!fin.eof()) {
+        cmdName = _streamListener.getCmdName(fin);
+        if (cmdName.front() != '#') {
+            Command *_newCommand = _newCreator.factoryMethod(cmdName);
+            _newCommand->execute(this, _streamListener.getArguments());
+            std::cout << "Command " << cmdName << " executed" << std::endl;
+            delete(_newCommand);
+        }
+    }
 }
 
 bool Calc::isDefined(const std::string &key) const {
@@ -19,7 +29,7 @@ double Calc::getDefine(const std::string &key) const {
 }
 
 void Calc::addDeifne(const std::string &key, double value) {
-    _definedValues.at(key) = value;
+    _definedValues.insert({key, value});
 }
 
 unsigned int Calc::stackLength() const {
@@ -36,6 +46,6 @@ double Calc::pop() {
     return temp;
 }
 
-double Calc::peek() {
+double Calc::peek() const{
     return _activeStack.top();
 }

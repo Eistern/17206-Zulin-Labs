@@ -1,16 +1,18 @@
 #include "creators.h"
 
-pushCreator _push;
-popCreator _pop;
-addCreator _add;
-subCreator _sub;
-mulCreator _mul;
-divCreator _div;
-sqrtCreator _sqrt;
-defineCreator _define;
+PushCreator _push;
+PopCreator _pop;
+PrintCreator _print;
+AddCreator _add;
+SubCreator _sub;
+MulCreator _mul;
+DivCreator _div;
+SqrtCreator _sqrt;
+DefineCreator _define;
 
-const std::map<std::string, cmdCreator*> cmdCreator::_creatorArray = { {"PUSH", &_push},
+const std::map<std::string, CmdCreator*> CmdCreator::_creatorArray = { {"PUSH", &_push}, // NOLINT
                                                                        {"POP", &_pop},
+                                                                       {"PRINT", &_print},
                                                                        {"+",  &_add},
                                                                        {"-", &_sub},
                                                                        {"*", &_mul},
