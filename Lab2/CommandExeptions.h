@@ -5,7 +5,7 @@
 
 class CommandExeptions : public std::exception {
 public:
-    virtual const char* what() noexcept {};
+    virtual const char* what() const noexcept {};
 };
 
 class wrong_number_of_arguments : public CommandExeptions {

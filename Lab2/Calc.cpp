@@ -16,7 +16,7 @@ void Calc::run(std::istream &fin, std::ostream &fout) {
             try {
                 _newCommand->execute(this, _streamListener.getArguments());
             }
-            catch (CommandExeptions &s) {
+            catch (const CommandExeptions &s) {
                 std::cout << s.what() << std::endl;
             }
 
