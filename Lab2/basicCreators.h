@@ -3,15 +3,6 @@
 
 #include "basicCommands.h"
 
-class CmdCreator {
-    static const std::map<std::string, CmdCreator*> _creatorArray;
-public:
-    Command* factoryMethod(const std::string& type) {
-        return _creatorArray.at(type)->create();
-    }
-    virtual Command* create() {};
-};
-
 class PushCreator : public CmdCreator {
 public:
     Command* create() override {

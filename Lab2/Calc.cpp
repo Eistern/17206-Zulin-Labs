@@ -1,20 +1,20 @@
 #include "Calc.h"
+#include "cmdFactory.h"
 #include "basicCommands.h"
-#include "creators.h"
 #include "Parser.h"
 #include "CommandExeptions.h"
 
 void Calc::run(std::istream &fin, std::ostream &fout) {
+    Context _calcContext;
     Parser _streamListener;
-    CmdCreator _newCreator;
     std::string cmdName;
 
     while (!fin.eof()) {
         cmdName = _streamListener.getCmdName(fin);
         if (cmdName.front() != '#') {
-            Command *_newCommand = _newCreator.factoryMethod(cmdName);
+            Command *_newCommand = cmdFactory::getInstance()->getCommand(cmdName);
             try {
-                _newCommand->execute(this, _streamListener.getArguments());
+                _newCommand->execute(&_calcContext, _streamListener.getArguments());
             }
             catch (const CommandExeptions &s) {
                 std::cout << s.what() << std::endl;
@@ -26,33 +26,33 @@ void Calc::run(std::istream &fin, std::ostream &fout) {
     }
 }
 
-bool Calc::isDefined(const std::string &key) const {
+bool Calc::Context::isDefined(const std::string &key) const {
     return _definedValues.find(key) != _definedValues.end();
 }
 
-double Calc::getDefine(const std::string &key) const {
+double Calc::Context::getDefine(const std::string &key) const {
     if (this->isDefined(key))
         return _definedValues.at(key);
 }
 
-void Calc::addDeifne(const std::string &key, double value) {
+void Calc::Context::addDeifne(const std::string &key, double value) {
     _definedValues.insert({key, value});
 }
 
-unsigned int Calc::stackLength() const {
+unsigned int Calc::Context::stackLength() const {
     return _activeStack.size();
 }
 
-void Calc::push(double _new) {
+void Calc::Context::push(double _new) {
     _activeStack.push(_new);
 }
 
-double Calc::pop() {
+double Calc::Context::pop() {
     double temp = _activeStack.top();
     _activeStack.pop();
     return temp;
 }
 
-double Calc::peek() const{
+double Calc::Context::peek() const{
     return _activeStack.top();
 }
