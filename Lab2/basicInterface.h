@@ -13,6 +13,7 @@ public:
 class CmdCreator {
 public:
     virtual Command* create() = 0;
+    virtual ~CmdCreator() = default;
 };
 
 #endif //LAB2_BASICINTERFACE_H

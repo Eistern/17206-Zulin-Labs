@@ -37,7 +37,7 @@ namespace {
         return true;
     }
 
-    bool isDefined = initCommands(); //NOLINT
+    bool isDefined = initCommands();
 }
 
 void CommandDEFINE::execute(Calc::Context *src, const std::list<std::string> &arg) {
