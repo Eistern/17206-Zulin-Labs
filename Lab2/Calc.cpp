@@ -1,7 +1,7 @@
 #include "Calc.h"
 #include "cmdFactory.h"
 #include "Parser.h"
-#include "CommandExeptions.h"
+#include "CommandExceptions.h"
 
 void Calc::run(std::istream &fin, std::ostream &fout) {
     Context _calcContext;
@@ -16,7 +16,7 @@ void Calc::run(std::istream &fin, std::ostream &fout) {
                 try {
                     _newCommand->execute(&_calcContext, _streamListener.getArguments());
                 }
-                catch (const CommandExeptions &s) {
+                catch (const CommandExceptions &s) {
                     std::cerr << s.what() << std::endl;
                 }
 
@@ -38,7 +38,7 @@ double Calc::Context::getDefine(const std::string &key) const {
     return _definedValues.at(key);
 }
 
-void Calc::Context::addDeifne(const std::string &key, double value) {
+void Calc::Context::addDefine(const std::string &key, double value) {
     _definedValues.insert({key, value});
 }
 

@@ -1,6 +1,6 @@
 #include "basicCommands.h"
 #include "basicCreators.h"
-#include "CommandExeptions.h"
+#include "CommandExceptions.h"
 #include <cmath>
 #include <iostream>
 #include <regex>
@@ -50,7 +50,7 @@ void CommandDEFINE::execute(Calc::Context *src, const std::list<std::string> &ar
     if (src->isDefined(_defineKey))
         throw already_defined();
 
-    src->addDeifne(_defineKey, _newDefine);
+    src->addDefine(_defineKey, _newDefine);
 }
 
 void CommandPOP::execute(Calc::Context *src, const std::list<std::string> &arg) {

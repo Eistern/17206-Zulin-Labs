@@ -7,6 +7,7 @@
 class Command {
 public:
     virtual void execute(Calc::Context *src, const std::list<std::string> &arg) = 0;
+    virtual ~Command() = default;
 };
 
 class CmdCreator {

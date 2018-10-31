@@ -6,7 +6,7 @@
 
 class Parser {
     std::string _buff = "";
-    unsigned int _shift = 0;
+    unsigned long long int _shift = 0;
 public:
     std::string getCmdName(std::istream& _input);
     std::list<std::string> getArguments();
