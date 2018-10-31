@@ -1,6 +1,5 @@
 #include "Calc.h"
 #include "cmdFactory.h"
-#include "basicCommands.h"
 #include "Parser.h"
 #include "CommandExeptions.h"
 

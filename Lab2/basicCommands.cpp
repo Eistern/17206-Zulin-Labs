@@ -6,36 +6,39 @@
 #include <regex>
 #include <cfloat>
 
-bool initCommands() noexcept {
-    auto* defineCmd = new DefineCreator;
-    cmdFactory::getInstance()->registerCommand("DEFINE", defineCmd);
+namespace {
+    bool initCommands() noexcept {
+        auto *defineCmd = new DefineCreator;
+        cmdFactory::getInstance()->registerCommand("DEFINE", defineCmd);
 
-    auto* popCmd = new PopCreator;
-    cmdFactory::getInstance()->registerCommand("POP", popCmd);
+        auto *popCmd = new PopCreator;
+        cmdFactory::getInstance()->registerCommand("POP", popCmd);
 
-    auto* pushCmd = new PushCreator;
-    cmdFactory::getInstance()->registerCommand("PUSH", pushCmd);
+        auto *pushCmd = new PushCreator;
+        cmdFactory::getInstance()->registerCommand("PUSH", pushCmd);
 
-    auto* printCmd = new PrintCreator;
-    cmdFactory::getInstance()->registerCommand("PRINT", printCmd);
+        auto *printCmd = new PrintCreator;
+        cmdFactory::getInstance()->registerCommand("PRINT", printCmd);
 
-    auto* addCmd = new AddCreator;
-    cmdFactory::getInstance()->registerCommand("+", addCmd);
+        auto *addCmd = new AddCreator;
+        cmdFactory::getInstance()->registerCommand("+", addCmd);
 
-    auto* subCmd = new SubCreator;
-    cmdFactory::getInstance()->registerCommand("-", subCmd);
+        auto *subCmd = new SubCreator;
+        cmdFactory::getInstance()->registerCommand("-", subCmd);
 
-    auto* mulCmd = new MulCreator;
-    cmdFactory::getInstance()->registerCommand("*", mulCmd);
+        auto *mulCmd = new MulCreator;
+        cmdFactory::getInstance()->registerCommand("*", mulCmd);
 
-    auto* divCmd = new DivCreator;
-    cmdFactory::getInstance()->registerCommand("/", divCmd);
+        auto *divCmd = new DivCreator;
+        cmdFactory::getInstance()->registerCommand("/", divCmd);
 
-    auto* sqrtCmd = new SqrtCreator;
-    cmdFactory::getInstance()->registerCommand("DEFINE", sqrtCmd);
+        auto *sqrtCmd = new SqrtCreator;
+        cmdFactory::getInstance()->registerCommand("DEFINE", sqrtCmd);
+        return true;
+    }
+
+    bool isDefined = initCommands(); //NOLINT
 }
-
-bool isDefined = initCommands(); //NOLINT
 
 void CommandDEFINE::execute(Calc::Context *src, const std::list<std::string> &arg) {
     if (arg.size() != 2)

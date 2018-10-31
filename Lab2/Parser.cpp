@@ -1,5 +1,4 @@
 #include "Parser.h"
-#include <fstream>
 
 std::string Parser::getCmdName(std::istream& fin) {
     _shift = 0;
