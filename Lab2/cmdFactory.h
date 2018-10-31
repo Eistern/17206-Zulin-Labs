@@ -3,6 +3,13 @@
 
 #include "basicInterface.h"
 
+class command_not_found : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Command not found";
+    }
+};
+
 class cmdFactory {
     cmdFactory() = default;
     std::map<std::string, CmdCreator*> _creatorArray;
@@ -16,6 +23,8 @@ public:
         _creatorArray[key] = creator;
     }
     Command* getCommand(const std::string& cmdName) {
+        if (_creatorArray.find(cmdName) == _creatorArray.end())
+            throw command_not_found();
         return _creatorArray.at(cmdName)->create();
     }
     ~cmdFactory() noexcept {

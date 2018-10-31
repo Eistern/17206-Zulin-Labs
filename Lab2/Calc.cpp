@@ -11,16 +11,21 @@ void Calc::run(std::istream &fin, std::ostream &fout) {
     while (!fin.eof()) {
         cmdName = _streamListener.getCmdName(fin);
         if (cmdName.front() != '#') {
-            Command *_newCommand = cmdFactory::getInstance()->getCommand(cmdName);
             try {
-                _newCommand->execute(&_calcContext, _streamListener.getArguments());
-            }
-            catch (const CommandExeptions &s) {
-                std::cout << s.what() << std::endl;
-            }
+                Command *_newCommand = cmdFactory::getInstance()->getCommand(cmdName);
+                try {
+                    _newCommand->execute(&_calcContext, _streamListener.getArguments());
+                }
+                catch (const CommandExeptions &s) {
+                    std::cerr << s.what() << std::endl;
+                }
 
-            std::cout << "Command " << cmdName << " executed" << std::endl;
-            delete(_newCommand);
+                std::cout << "Command " << cmdName << " executed" << std::endl;
+                delete (_newCommand);
+            }
+            catch (const command_not_found &s) {
+                std::cerr << s.what() << std::endl;
+            }
         }
     }
 }
