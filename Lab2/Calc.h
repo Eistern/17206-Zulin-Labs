@@ -16,7 +16,7 @@ public:
         bool isDefined(const std::string &key) const;
         double getDefine(const std::string &key) const;
         void addDeifne(const std::string &key, double value);
-        unsigned int stackLength() const;
+        unsigned long long int stackLength() const;
         void push(double _new);
         double pop();
         double peek() const;

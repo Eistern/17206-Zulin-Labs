@@ -1,18 +1,7 @@
 #ifndef LAB2_CMDFACTORY_H
 #define LAB2_CMDFACTORY_H
 
-#include "Calc.h"
-#include <list>
-
-class Command {
-public:
-    virtual void execute(Calc::Context *src, const std::list<std::string> &arg) = 0;
-};
-
-class CmdCreator {
-public:
-    virtual Command* create() {};
-};
+#include "basicInterface.h"
 
 class cmdFactory {
     cmdFactory() = default;

@@ -31,15 +31,14 @@ bool Calc::Context::isDefined(const std::string &key) const {
 }
 
 double Calc::Context::getDefine(const std::string &key) const {
-    if (this->isDefined(key))
-        return _definedValues.at(key);
+    return _definedValues.at(key);
 }
 
 void Calc::Context::addDeifne(const std::string &key, double value) {
     _definedValues.insert({key, value});
 }
 
-unsigned int Calc::Context::stackLength() const {
+unsigned long long int Calc::Context::stackLength() const {
     return _activeStack.size();
 }
 
