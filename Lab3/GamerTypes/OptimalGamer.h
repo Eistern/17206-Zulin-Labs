@@ -6,8 +6,8 @@
 class OptimalGamer : public Gamer {
     bool _prevTurn = false;
 public:
-    std::pair<unsigned int, unsigned int> setShip() override;
-    std::pair<unsigned int, unsigned int> hitShip() override;
+    std::pair<unsigned int, unsigned int> setShip() const override;
+    std::pair<unsigned int, unsigned int> hitShip() const override;
     void setPrevTurn(bool value) override { _prevTurn = value; };
 };
 

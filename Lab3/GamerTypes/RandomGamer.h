@@ -7,8 +7,8 @@
 class RandomGamer : public Gamer {
     std::random_device _rand;
 public:
-    std::pair<unsigned int, unsigned int> setShip() override;
-    std::pair<unsigned int, unsigned int> hitShip() override;
+    std::pair<unsigned int, unsigned int> setShip() const override;
+    std::pair<unsigned int, unsigned int> hitShip() const override;
     ~RandomGamer() override = default;
 };
 
