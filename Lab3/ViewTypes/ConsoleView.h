@@ -5,7 +5,8 @@
 
 class ConsoleView : public GameView {
 public:
-    void updateFrame() override;
+    void sendMessage(const std::string &message) override;
+    void updateBoard(const Battleships::Board &playerBoard, const Battleships::Board &opponentBoard) override;
 };
 
 

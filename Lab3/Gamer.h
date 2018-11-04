@@ -5,8 +5,9 @@
 
 class Gamer {
 public:
-    virtual std::pair<char, unsigned int> setShip() = 0;
-    virtual std::pair<char, unsigned int> hitShip() = 0;
+    virtual std::pair<unsigned int, unsigned int> setShip() = 0;
+    virtual std::pair<unsigned int, unsigned int> hitShip() = 0;
+    virtual void setPrevTurn(bool) {};
     virtual ~Gamer() = default;
 };
 

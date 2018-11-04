@@ -5,8 +5,8 @@
 
 class ConsoleGamer : public Gamer {
 public:
-    std::pair<char, unsigned int> setShip() override;
-    std::pair<char, unsigned int> hitShip() override;
+    std::pair<unsigned int, unsigned int> setShip() override;
+    std::pair<unsigned int, unsigned int> hitShip() override;
 };
 
 #endif //LAB3_CONSOLEGAMER_H

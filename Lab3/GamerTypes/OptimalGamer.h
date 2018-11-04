@@ -4,9 +4,11 @@
 #include "../Gamer.h"
 
 class OptimalGamer : public Gamer {
+    bool _prevTurn = false;
 public:
-    std::pair<char, unsigned int> setShip() override;
-    std::pair<char, unsigned int> hitShip() override;
+    std::pair<unsigned int, unsigned int> setShip() override;
+    std::pair<unsigned int, unsigned int> hitShip() override;
+    void setPrevTurn(bool value) override { _prevTurn = value; };
 };
 
 

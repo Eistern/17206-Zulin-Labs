@@ -1,9 +1,9 @@
 #include "ConsoleGamer.h"
 
-std::pair<char, unsigned int> ConsoleGamer::setShip() {
+std::pair<unsigned int, unsigned int> ConsoleGamer::setShip() {
 
 }
 
-std::pair<char, unsigned int> ConsoleGamer::hitShip() {
+std::pair<unsigned int, unsigned int> ConsoleGamer::hitShip() {
 
 }
