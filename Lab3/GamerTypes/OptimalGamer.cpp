@@ -1,9 +1,9 @@
 #include "OptimalGamer.h"
 
-std::pair<unsigned int, unsigned int> OptimalGamer::hitShip() const {
+std::vector<unsigned int> OptimalGamer::hitShip() const {
 
 }
 
-std::pair<unsigned int, unsigned int> OptimalGamer::setShip() const {
+std::vector<unsigned int> OptimalGamer::setShip() const {
 
 }

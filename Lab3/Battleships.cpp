@@ -6,67 +6,94 @@ void Battleships::run(const Gamer &player1, const Gamer &player2, const GameView
         Board secondBoard;
         screen.sendMessage("---------------New round---------------\n");
         screen.sendMessage("-------First player placing ships------\n");
-        initBoard(player1, firstBoard, screen);
+        placeStage(player1, firstBoard, screen);
         screen.sendMessage("------Second player placing ships------\n");
-        initBoard(player2, secondBoard, screen);
+        placeStage(player2, secondBoard, screen);
+        while (!firstBoard.isWin() && !secondBoard.isWin()) {
+            screen.sendMessage("-------------First player turn--------\n");
+            hitStage(player1, firstBoard, secondBoard, screen);
+            screen.sendMessage("------------Second player turn--------\n");
+            hitStage(player2, secondBoard, firstBoard, screen);
+        }
+        if (firstBoard.isWin())
+            screen.sendMessage("Second player wins!");
+        else
+            screen.sendMessage("First player wins!");
     }
 }
 
-void Battleships::initBoard(const Gamer &player, const Battleships::Board &playerBoard, const GameView& screen) const {
-    std::pair<unsigned int, unsigned int> currentChoice = {11, 11};
-    screen.sendMessage("Input ");
+void Battleships::placeStage(const Gamer &player, Battleships::Board &playerBoard, const GameView &screen) const {
+    std::vector<unsigned int> currentChoice;
+    screen.sendMessage("Input coordinates and direction(H/W) of your ships\n");
     for (int length = 1; length < 5; ++length)
         for (int j = 0; j < 5 - length; ++j) {
+            playerBoard.printBoard(true, screen);
             currentChoice = player.setShip();
-            while (!playerBoard.validateSet(currentChoice)) {
-                screen.sendMessage("Invalid placement\n");
+            while (!playerBoard.validateSet(currentChoice, length)) {
+                screen.sendMessage("Invalid placement, please try again\n");
                 currentChoice = player.setShip();
             }
-            playerBoard.printBoard(true, screen);
+            playerBoard.setShip(currentChoice, length);
         }
 }
 
-bool Battleships::Board::hitShip(std::pair<unsigned int, unsigned int> choice) {
-    if (_board[choice.first][choice.second] == 0) {
-        _board[choice.first][choice.second] = 2;
+void Battleships::hitStage(const Gamer &player, Battleships::Board &playerBoard, Battleships::Board &opponentBoard, const GameView &screen) const {
+    std::vector<unsigned int> currentChoice;
+    playerBoard.printBoard(true, screen);
+    opponentBoard.printBoard(false, screen);
+    currentChoice = player.hitShip();
+    while (!opponentBoard.validateHit(currentChoice)) {
+        screen.sendMessage("Invalid hit(already hit this place), please try again\n");
+        currentChoice = player.hitShip();
+    }
+    bool result = opponentBoard.hitShip(currentChoice);
+}
+
+bool Battleships::Board::hitShip(std::vector<unsigned int> choice) {
+    if (_board[choice[0]][choice[1]] == 0) {
+        _board[choice[0]][choice[1]] = 2;
         return false;
     } else {
-        _board[choice.first][choice.second] = -1;
+        _board[choice[0]][choice[1]] = -1;
         return true;
     }
 }
 
-void Battleships::Board::setShip(std::pair<unsigned int, unsigned int> choice, char rotation, int size) {
-    if (rotation == 'H') {
-        for (int i = choice.first; i < choice.first + size; ++i)
-            _board[i][choice.second] = 1;
+void Battleships::Board::setShip(std::vector<unsigned int> choice, int size) {
+    if (choice[2] == 0) {
+        for (int i = choice[0]; i < choice[0] + size; ++i)
+            _board[i][choice[1]] = 1;
     } else {
-        for (int i = choice.second; i < choice.second + size; ++i)
-            _board[choice.first][i] = 1;
+        for (int i = choice[1]; i < choice[1] + size; ++i)
+            _board[choice[0]][i] = 1;
     }
 }
 
-bool Battleships::Board::validateSet(std::pair<unsigned int, unsigned int> choice, char rotation, int size) const {
-    if (rotation == 'H') {
-        if (choice.first + size - 1 >= 10)
-            return false;
-        for (int i = choice.first - 1; i <= choice.first + size; ++i)
-            for (int j = choice.second - 1; j <= choice.second + 1; ++j)
+bool Battleships::Board::validateSet(std::vector<unsigned int> choice, int size) const {
+    if (choice[2] == 0) {
+        for (int i = choice[0] - 1; i <= choice[0] + size; ++i)
+            for (int j = choice[1] - 1; j <= choice[1] + 1; ++j)
                 if ((i >= 0 && i < 10) && (j >= 0 && j < 10) && _board[i][j] != 0)
                     return false;
     } else {
-        if (choice.second + size - 1 >= 10)
-            return false;
-        for (int i = choice.second - 1; i <= choice.second + size; ++i)
-            for (int j = choice.first - 1; j <= choice.first + 1; ++j)
+        for (int i = choice[1] - 1; i <= choice[1] + size; ++i)
+            for (int j = choice[0] - 1; j <= choice[0] + 1; ++j)
                 if ((i >= 0 && i < 10) && (j >= 0 && j < 10) && _board[i][j] != 0)
                     return false;
     }
     return true;
 }
 
-bool Battleships::Board::validateHit(std::pair<unsigned int, unsigned int> choice) const {
-    return _board[choice.first][choice.second] != 0 && _board[choice.first][choice.second] != 1;
+bool Battleships::Board::validateHit(std::vector<unsigned int> choice) const {
+    return _board[choice[0]][choice[1]] != 0 && _board[choice[0]][choice[1]] != 1;
+}
+
+bool Battleships::Board::isWin() const {
+    for (int i = 0; i < 10 ; ++i)
+        for (int j = 0; j < 10; ++j)
+            if (_board[i][j] == 1)
+                return false;
+    return true;
 }
 
 void Battleships::Board::printBoard(bool printAll, const GameView& screen) const {
@@ -90,6 +117,7 @@ void Battleships::Board::printBoard(bool printAll, const GameView& screen) const
                         screen.sendMessage("+");
                         break;
                     default:
+                        screen.sendMessage("~");
                         break;
                 }
             screen.sendMessage("\n");

@@ -1,7 +1,7 @@
 #ifndef LAB3_BATTLESHIPS_H
 #define LAB3_BATTLESHIPS_H
 
-#include <utility>
+#include <vector>
 #include "Gamer.h"
 #include "GameView.h"
 
@@ -14,13 +14,15 @@ public:
         int _board[10][10] = {0};
     public:
         void printBoard(bool printAll, const GameView& screen) const;
-        void setShip(std::pair<unsigned int, unsigned int>, char rotation, int size);
-        bool hitShip(std::pair<unsigned int, unsigned int>);
-        bool validateSet(std::pair<unsigned int, unsigned int>, char rotation, int size) const;
-        bool validateHit(std::pair<unsigned int, unsigned int>) const;
+        void setShip(std::vector<unsigned int>, int size);
+        bool hitShip(std::vector<unsigned int>);
+        bool validateSet(std::vector<unsigned int>, int size) const;
+        bool validateHit(std::vector<unsigned int>) const;
+        bool isWin() const;
     };
 private:
-    void initBoard(const Gamer &player, const Board &board, const GameView &screen) const;
+    void placeStage(const Gamer&, Board&, const GameView &screen) const;
+    void hitStage(const Gamer&, Board&, Board&, const GameView &screen) const;
 };
 
 
