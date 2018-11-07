@@ -34,8 +34,8 @@ void Battleships::placeStage(const Gamer &player, Battleships::Board &playerBoar
                 currentChoice = player.setShip();
             }
             playerBoard.setShip(currentChoice, length);
-            system("pause");
         }
+    playerBoard.printBoard(true, screen);
 }
 
 void Battleships::hitStage(const Gamer &player, Battleships::Board &playerBoard, Battleships::Board &opponentBoard, const GameView &screen) const {
@@ -61,7 +61,7 @@ bool Battleships::Board::hitShip(std::vector<unsigned int> choice) {
 }
 
 void Battleships::Board::setShip(std::vector<unsigned int> choice, int size) {
-    if (choice[2] == 0) {
+    if (choice[2] == 1) {
         for (int i = choice[0]; i < choice[0] + size; ++i)
             _board[i][choice[1]] = 1;
     } else {
@@ -71,14 +71,18 @@ void Battleships::Board::setShip(std::vector<unsigned int> choice, int size) {
 }
 
 bool Battleships::Board::validateSet(std::vector<unsigned int> choice, int size) const {
-    if (choice[2] == 0) {
-        for (int i = choice[0] - 1; i <= choice[0] + size; ++i)
-            for (int j = choice[1] - 1; j <= choice[1] + 1; ++j)
+    if (choice[2] == 1) {
+        if (choice[0] + size > 10)
+            return false;
+        for (int i = (int)choice[0] - 1; i <= (int)choice[0] + size; ++i)
+            for (int j = (int)choice[1] - 1; j <= (int)choice[1] + 1; ++j)
                 if ((i >= 0 && i < 10) && (j >= 0 && j < 10) && _board[i][j] != 0)
                     return false;
     } else {
-        for (int i = choice[1] - 1; i <= choice[1] + size; ++i)
-            for (int j = choice[0] - 1; j <= choice[0] + 1; ++j)
+        if (choice[1] + size > 10)
+            return false;
+        for (int i = (int)choice[1] - 1; i <= (int)choice[1] + size; ++i)
+            for (int j = (int)choice[0] - 1; j <= (int)choice[0] + 1; ++j)
                 if ((i >= 0 && i < 10) && (j >= 0 && j < 10) && _board[i][j] != 0)
                     return false;
     }
@@ -86,14 +90,15 @@ bool Battleships::Board::validateSet(std::vector<unsigned int> choice, int size)
 }
 
 bool Battleships::Board::validateHit(std::vector<unsigned int> choice) const {
-    return _board[choice[0]][choice[1]] != 0 && _board[choice[0]][choice[1]] != 1;
+    return _board[choice[0]][choice[1]] == 0 || _board[choice[0]][choice[1]] == 1;
 }
 
 bool Battleships::Board::isWin() const {
-    for (int i = 0; i < 10 ; ++i)
+    for (auto i : _board)
         for (int j = 0; j < 10; ++j)
-            if (_board[i][j] == 1)
+            if (i[j] == 1)
                 return false;
+
     return true;
 }
 

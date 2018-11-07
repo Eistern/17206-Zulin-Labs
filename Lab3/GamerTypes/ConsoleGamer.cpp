@@ -4,9 +4,8 @@
 std::vector<unsigned int> ConsoleGamer::setShip() const {
     int x;
     unsigned char y, dir;
-    std::cout << "Please input coord of your next ship(line/row/direction): ";
+    std::cout << "Please input coord of your next ship(line/row/direction):\n";
     std::cin >> x >> y >> dir;
-    //x = 0; y = 'A'; dir = 'H';
     while (!(x >= 0 && x < 10) || !(y >= 'A' && y <= 'J') || !(dir == 'H' || dir == 'W')) {
         std::cout << "Invalid format, please try again" << std::endl;
         std::cin >> x >> y >> dir;
