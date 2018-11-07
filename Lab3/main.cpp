@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[]) {
     GameView* _screen = new ConsoleView;
-    Gamer* _player1 = new ConsoleGamer;
+    Gamer* _player1 = new RandomGamer;
     Gamer* _player2 = new RandomGamer;
     Battleships _game;
     _game.run(*_player1, *_player2, *_screen);

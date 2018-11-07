@@ -34,6 +34,7 @@ void Battleships::placeStage(const Gamer &player, Battleships::Board &playerBoar
                 currentChoice = player.setShip();
             }
             playerBoard.setShip(currentChoice, length);
+            system("pause");
         }
 }
 

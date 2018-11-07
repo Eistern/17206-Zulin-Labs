@@ -2,7 +2,6 @@
 #define LAB3_RANDOMGAMER_H
 
 #include "../Gamer.h"
-#include <random>
 
 class RandomGamer : public Gamer {
 public:

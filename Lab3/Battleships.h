@@ -11,7 +11,7 @@ public:
     class Board {
         friend class Battleships;
         Board() = default;
-        int _board[10][10] = {0};
+        int _board[10][10] = {{0}};
     public:
         void printBoard(bool printAll, const GameView& screen) const;
         void setShip(std::vector<unsigned int>, int size);
