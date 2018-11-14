@@ -40,8 +40,8 @@ bool Board::validateSet(std::vector<unsigned int> choice, int size) const {
     } else {
         if (choice[1] + size > 10)
             return false;
-        for (int i = (int)choice[1] - 1; i <= (int)choice[1] + size; ++i)
-            for (int j = (int)choice[0] - 1; j <= (int)choice[0] + 1; ++j)
+        for (int j = (int)choice[1] - 1; j <= (int)choice[1] + size; ++j)
+            for (int i = (int)choice[0] - 1; i <= (int)choice[0] + 1; ++i)
                 if ((i >= 0 && i < 10) && (j >= 0 && j < 10) && _board[i][j] != 0)
                     return false;
     }

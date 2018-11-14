@@ -11,7 +11,7 @@ public:
     void run(const Gamer &player1, const Gamer &player2, int count = 1) const;
 private:
     void placeStage(const Gamer&, Board&, const GameView &screen) const;
-    void hitStage(const Gamer&, Board&, const GameView &screen) const;
+    bool hitStage(const Gamer&, Board&, const GameView &screen) const;
 };
 
 

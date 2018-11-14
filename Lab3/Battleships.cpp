@@ -20,10 +20,12 @@ void Battleships::run(const Gamer &player1, const Gamer &player2, int count) con
 
         while (!firstBoard.isWin() && !secondBoard.isWin()) {
             screen->sendMessage("First player turn\n");
-            hitStage(player1, secondBoard, *screen);
+            while (!secondBoard.isWin() && hitStage(player1, secondBoard, *screen))
+                screen->sendMessage("Hit correct!\n");
 
             screen->sendMessage("Second player turn\n");
-            hitStage(player2, firstBoard, *screen);
+            while (!firstBoard.isWin() && hitStage(player2, firstBoard, *screen))
+                screen->sendMessage("Hit correct!\n");
         }
 
         if (firstBoard.isWin())
@@ -51,11 +53,9 @@ void Battleships::placeStage(const Gamer &player, Board &playerBoard, const Game
         }
 
     screen.printBoard(playerBoard);
-    system("cls");
-    system("pause");
 }
 
-void Battleships::hitStage(const Gamer &player, Board &opponentBoard, const GameView &screen) const {
+bool Battleships::hitStage(const Gamer &player, Board &opponentBoard, const GameView &screen) const {
     std::vector<unsigned int> currentChoice;
 
     screen.printBoard(opponentBoard);
@@ -67,6 +67,5 @@ void Battleships::hitStage(const Gamer &player, Board &opponentBoard, const Game
     }
 
     bool result = opponentBoard.hitShip(currentChoice);
-    system("cls");
-    system("pause");
+    return result;
 }
