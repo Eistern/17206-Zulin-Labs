@@ -2,13 +2,13 @@
 #define LAB3_GAMER_H
 
 #include <vector>
-//TODO change signatue of setShip and hitShip
-//TODO implenemt types of players
+#include "Board.h"
+//TODO implenemt optimalGamer
 
 class Gamer {
 public:
     virtual std::vector<unsigned int> setShip() const = 0;
-    virtual std::vector<unsigned int> hitShip() const = 0;
+    virtual std::vector<unsigned int> hitShip(const Board&) const = 0;
     virtual ~Gamer() = default;
 };
 

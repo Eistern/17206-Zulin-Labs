@@ -17,7 +17,7 @@ std::vector<unsigned int> ConsoleGamer::setShip() const {
     return result;
 }
 
-std::vector<unsigned int> ConsoleGamer::hitShip() const {
+std::vector<unsigned int> ConsoleGamer::hitShip(const Board& none) const {
     int x;
     unsigned char y;
     std::cout << "Please input coord of your hit(line/row): ";

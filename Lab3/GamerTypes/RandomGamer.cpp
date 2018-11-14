@@ -11,7 +11,7 @@ std::vector<unsigned int> RandomGamer::setShip() const {
     return {x, y, dir};
 }
 
-std::vector<unsigned int> RandomGamer::hitShip() const {
+std::vector<unsigned int> RandomGamer::hitShip(const Board& none) const {
     static std::random_device seedGen;
     static std::default_random_engine generator(seedGen());
     static std::uniform_int_distribution<unsigned int> distribution(0,9);
