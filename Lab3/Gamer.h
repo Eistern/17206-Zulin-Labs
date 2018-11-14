@@ -9,7 +9,6 @@ class Gamer {
 public:
     virtual std::vector<unsigned int> setShip() const = 0;
     virtual std::vector<unsigned int> hitShip() const = 0;
-    virtual void setPrevTurn(bool) {};
     virtual ~Gamer() = default;
 };
 

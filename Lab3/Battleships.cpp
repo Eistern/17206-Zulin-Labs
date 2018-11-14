@@ -1,24 +1,28 @@
 #include "Battleships.h"
+#include "ViewTypes/ConsoleView.h"
 
-void Battleships::run(const Gamer &player1, const Gamer &player2, const GameView& screen, int count) const {
+void Battleships::run(const Gamer &player1, const Gamer &player2, int count) const {
+    GameView* screen = new ConsoleView;
     for (int i = 0; i < count; ++i) {
         Board firstBoard;
         Board secondBoard;
-        screen.sendMessage("---------------New round---------------\n");
-        screen.sendMessage("-------First player placing ships------\n");
-        placeStage(player1, firstBoard, screen);
-        screen.sendMessage("------Second player placing ships------\n");
-        placeStage(player2, secondBoard, screen);
+        screen->sendMessage("New round\n");
+        screen->sendMessage("First player placing ships\n");
+        placeStage(player1, firstBoard, *screen);
+        screen->sendMessage("Second player placing ships\n");
+        placeStage(player2, secondBoard, *screen);
+        firstBoard.gameStarted = true;
+        secondBoard.gameStarted = true;
         while (!firstBoard.isWin() && !secondBoard.isWin()) {
-            screen.sendMessage("-------------First player turn--------\n");
-            hitStage(player1, firstBoard, secondBoard, screen);
-            screen.sendMessage("------------Second player turn--------\n");
-            hitStage(player2, secondBoard, firstBoard, screen);
+            screen->sendMessage("First player turn\n");
+            hitStage(player1, secondBoard, *screen);
+            screen->sendMessage("Second player turn\n");
+            hitStage(player2, firstBoard, *screen);
         }
         if (firstBoard.isWin())
-            screen.sendMessage("Second player wins!");
+            screen->sendMessage("Second player wins!");
         else
-            screen.sendMessage("First player wins!");
+            screen->sendMessage("First player wins!");
     }
 }
 
@@ -27,7 +31,7 @@ void Battleships::placeStage(const Gamer &player, Battleships::Board &playerBoar
     screen.sendMessage("Input coordinates and direction(H/W) of your ships\n");
     for (int length = 1; length < 5; ++length)
         for (int j = 0; j < 5 - length; ++j) {
-            playerBoard.printBoard(true, screen);
+//            playerBoard.printBoard(true, screen);
             currentChoice = player.setShip();
             while (!playerBoard.validateSet(currentChoice, length)) {
                 screen.sendMessage("Invalid placement, please try again\n");
@@ -35,13 +39,13 @@ void Battleships::placeStage(const Gamer &player, Battleships::Board &playerBoar
             }
             playerBoard.setShip(currentChoice, length);
         }
-    playerBoard.printBoard(true, screen);
+//    playerBoard.printBoard(true, screen);
 }
 
-void Battleships::hitStage(const Gamer &player, Battleships::Board &playerBoard, Battleships::Board &opponentBoard, const GameView &screen) const {
+void Battleships::hitStage(const Gamer &player, Battleships::Board &opponentBoard, const GameView &screen) const {
     std::vector<unsigned int> currentChoice;
-    playerBoard.printBoard(true, screen);
-    opponentBoard.printBoard(false, screen);
+//    playerBoard.printBoard(true, screen);
+//    opponentBoard.printBoard(false, screen);
     currentChoice = player.hitShip();
     while (!opponentBoard.validateHit(currentChoice)) {
         screen.sendMessage("Invalid hit(already hit this place), please try again\n");
@@ -100,52 +104,4 @@ bool Battleships::Board::isWin() const {
                 return false;
 
     return true;
-}
-
-void Battleships::Board::printBoard(bool printAll, const GameView& screen) const {
-    if (printAll) {
-        screen.sendMessage("-----Your board------\n");
-        screen.sendMessage("+ABCDEFGHIJ\n");
-        for (unsigned int i = 0; i < 10; ++i) {
-            screen.sendMessage(i);
-            for (unsigned int j = 0; j < 10; ++j)
-                switch (_board[i][j]) {
-                    case 0 :
-                        screen.sendMessage("~");
-                        break;
-                    case 1 :
-                        screen.sendMessage("O");
-                        break;
-                    case 2 :
-                        screen.sendMessage(".");
-                        break;
-                    case -1 :
-                        screen.sendMessage("+");
-                        break;
-                    default:
-                        screen.sendMessage("~");
-                        break;
-                }
-            screen.sendMessage("\n");
-        }
-    } else {
-        screen.sendMessage("-----Opponent's board------\n");
-        screen.sendMessage("+ABCDEFGHIJ\n");
-        for (unsigned int i = 0; i < 10; ++i) {
-            screen.sendMessage(i);
-            for (unsigned int j = 0; j < 10; ++j)
-                switch (_board[i][j]) {
-                    case 2 :
-                        screen.sendMessage(".");
-                        break;
-                    case -1 :
-                        screen.sendMessage("+");
-                        break;
-                    default:
-                        screen.sendMessage("?");
-                        break;
-                }
-            screen.sendMessage("\n");
-        }
-    }
 }
