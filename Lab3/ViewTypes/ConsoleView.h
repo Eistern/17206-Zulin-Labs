@@ -6,7 +6,7 @@
 class ConsoleView : public GameView {
 public:
     void sendMessage(const std::string &message) const override;
-    void printBoard() const override;
+    void printBoard(const Board&) const override;
 };
 
 
