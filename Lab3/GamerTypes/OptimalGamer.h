@@ -4,6 +4,9 @@
 #include "../Gamer.h"
 
 class OptimalGamer : public Gamer {
+    static int _probability[10][10];
+
+    std::vector<unsigned int> _previousHit =  {0, 0};
 public:
     std::vector<unsigned int> setShip() const override;
     std::vector<unsigned int> hitShip(const Board&) const override;
