@@ -1,7 +1,7 @@
 #include "Battleships.h"
 #include "ViewTypes/ConsoleView.h"
 
-void Battleships::run(const Gamer &player1, const Gamer &player2, int count) const {
+void Battleships::run(Gamer &player1, Gamer &player2, int count) const {
     GameView* screen = new ConsoleView;
     for (int i = 0; i < count; ++i) {
         Board firstBoard;
@@ -35,7 +35,7 @@ void Battleships::run(const Gamer &player1, const Gamer &player2, int count) con
     }
 }
 
-void Battleships::placeStage(const Gamer &player, Board &playerBoard, const GameView &screen) const {
+void Battleships::placeStage(Gamer &player, Board &playerBoard, const GameView &screen) const {
     std::vector<unsigned int> currentChoice;
     screen.sendMessage("Input coordinates and direction(H/W) of your ships\n");
 
@@ -55,7 +55,7 @@ void Battleships::placeStage(const Gamer &player, Board &playerBoard, const Game
     screen.printBoard(playerBoard);
 }
 
-bool Battleships::hitStage(const Gamer &player, Board &opponentBoard, const GameView &screen) const {
+bool Battleships::hitStage(Gamer &player, Board &opponentBoard, const GameView &screen) const {
     std::vector<unsigned int> currentChoice;
 
     screen.printBoard(opponentBoard);

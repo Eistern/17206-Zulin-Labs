@@ -1,7 +1,7 @@
 #include "ConsoleGamer.h"
 #include <iostream>
 
-std::vector<unsigned int> ConsoleGamer::setShip() const {
+std::vector<unsigned int> ConsoleGamer::setShip() {
     int x;
     unsigned char y, dir;
     std::cout << "Please input coord of your next ship(line/row/direction):\n";
@@ -17,7 +17,7 @@ std::vector<unsigned int> ConsoleGamer::setShip() const {
     return result;
 }
 
-std::vector<unsigned int> ConsoleGamer::hitShip(const Board& none) const {
+std::vector<unsigned int> ConsoleGamer::hitShip(const Board& none) {
     int x;
     unsigned char y;
     std::cout << "Please input coord of your hit(line/row): ";

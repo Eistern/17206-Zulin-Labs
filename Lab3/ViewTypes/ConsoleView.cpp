@@ -18,7 +18,7 @@ void ConsoleView::printBoard(const Board &playerBoard) const {
                     std::cout << "O";
                     break;
                 case 2 :
-                    std::cout << ".";
+                    std::cout << "-";
                     break;
                 case 3 :
                     std::cout << "+";

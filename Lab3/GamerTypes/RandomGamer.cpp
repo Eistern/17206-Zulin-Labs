@@ -1,7 +1,7 @@
 #include "RandomGamer.h"
 #include <random>
 
-std::vector<unsigned int> RandomGamer::setShip() const {
+std::vector<unsigned int> RandomGamer::setShip() {
     static std::random_device seedGen;
     static std::default_random_engine generator(seedGen());
     static std::uniform_int_distribution<unsigned int> distribution(0,9);
@@ -11,7 +11,7 @@ std::vector<unsigned int> RandomGamer::setShip() const {
     return {x, y, dir};
 }
 
-std::vector<unsigned int> RandomGamer::hitShip(const Board& none) const {
+std::vector<unsigned int> RandomGamer::hitShip(const Board& none) {
     static std::random_device seedGen;
     static std::default_random_engine generator(seedGen());
     static std::uniform_int_distribution<unsigned int> distribution(0,9);

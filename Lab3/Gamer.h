@@ -7,8 +7,8 @@
 
 class Gamer {
 public:
-    virtual std::vector<unsigned int> setShip() const = 0;
-    virtual std::vector<unsigned int> hitShip(const Board&) const = 0;
+    virtual std::vector<unsigned int> setShip() = 0;
+    virtual std::vector<unsigned int> hitShip(const Board&) = 0;
     virtual ~Gamer() = default;
 };
 
