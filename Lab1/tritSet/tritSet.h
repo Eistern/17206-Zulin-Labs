@@ -42,7 +42,7 @@ public:
     //Function cardinality returns number of contained Trits of type "value" in tritSet, if given
     //Otherwise if returns unordered map, witch contains pairs of <Trit type, number of Trits of this type>
     std::size_t cardinality(Trit value) const;
-    std::unordered_map<Trit, int, std::hash<Trit>> cardinality() const;
+    std::unordered_map<Trit, int> cardinality() const;
 
     //Operator[] creates an object of placeHolder, which could be used to gain access to the element of tritSet
     placeHolder operator[] (unsigned int index);

@@ -1,6 +1,6 @@
 #include "OptimalGamer.h"
 
-#define CRTITICAL_COUNT 25
+#define CRITICAL_COUNT 25
 
 std::vector<unsigned int> OptimalGamer::_findNext() const {
     unsigned int pos = 0;
@@ -11,10 +11,25 @@ std::vector<unsigned int> OptimalGamer::_findNext() const {
             pos %= 100;
             count++;
         }
-        if (count == CRTITICAL_COUNT)
+        if (count == CRITICAL_COUNT)
             pos++;
     }
     return {pos % 10, pos / 10};
+}
+
+std::vector<unsigned int> OptimalGamer::_continueHit() const {
+    if (!_reverse) {
+        if (_hitDirection == 1)
+            return {_previousHit[0] + 1, _previousHit[1]};
+        else
+            return {_previousHit[0], _previousHit[1] + 1};
+    } else {
+        if (_hitDirection == 1)
+            return {_previousHit[0] - 1, _previousHit[1]};
+        else
+            return {_previousHit[0], _previousHit[1] - 1};
+    }
+
 }
 
 void OptimalGamer::_updateMax(const Board &opponentBoard) {
@@ -63,7 +78,7 @@ void OptimalGamer::_markShip(std::vector<unsigned int> choice, int size) {
     }
 }
 
-bool OptimalGamer::_checkShip(const Board &opponentBoard, std::vector<unsigned int> position) {
+bool OptimalGamer::_correctInfo(const Board &opponentBoard, std::vector<unsigned int> position) {
     int size = 0;
     unsigned x = position[0], y = position[1];
     if (_hitDirection == 1) {
@@ -84,19 +99,40 @@ bool OptimalGamer::_checkShip(const Board &opponentBoard, std::vector<unsigned i
             _markShip({x + 1, y}, size);
         else
             _markShip({x, y + 1}, size);
+
+        _reverse = false;
+        _hitDirection = 1;
         return true;
+    }
+    if (opponentBoard.getInfo({x, y}) == -1) {
+        if (size == 1)
+            _hitDirection = (_hitDirection + 1) % 2;
+        else {
+            _reverse = true;
+            if (_hitDirection == 1)
+                _previousHit = {x + 1, y};
+            else
+                _previousHit = {x, y + 1};
+        }
     }
     return false;
 }
 
 std::vector<unsigned int> OptimalGamer::hitShip(const Board& important) {
     _updateMax(important);
-    if (important.getInfo(_previousHit) == 3) {
 
+    if (important.getInfo(_previousHit) == 3) {
+        //Сделать удар в зависимости направления и реверса, если возможно, иначе отметить и найти новое место
+        _previousHit = _continueHit();
     } else {
-        bool isDead = _checkShip(important, _previousHit);
+        bool isDead = _correctInfo(important, _previousHit);
         if (isDead)
             _previousHit = _findNext();
+        else
+            _previousHit = _continueHit();
+        //Проверить, подбит ли корабль, если подбит, то изменть _permitted и найти новую координату с помощью findNext
+        //Если не подбит и длина не 1, то сделать _reverse
+        //Если длина равна 1, то... пропустить
     }
 
     return _previousHit;

@@ -115,7 +115,7 @@ std::size_t tritSet::cardinality(Trit value) const{
     return result;
 }
 
-std::unordered_map<Trit, int, std::hash<Trit>> tritSet::cardinality() const{
+std::unordered_map<Trit, int> tritSet::cardinality() const{
     std::unordered_map<Trit, int, std::hash<Trit>> result{};
     result.emplace(Trit::FALSE, this->cardinality(Trit::FALSE));
     result.emplace(Trit::UNKNOWN, this->cardinality(Trit::UNKNOWN));
