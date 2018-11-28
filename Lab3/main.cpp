@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     int count = 1;
 
     if (options[ROUNDS])
-        count = atoi(options[ROUNDS].last()->arg);
+        count = atoi(options[ROUNDS].last()->arg); //NOLINT
     for (option::Option *opt = options[PLAYER]; opt; opt = opt->next()) {
         switch (opt->type()) {
             case FIRST :
@@ -95,5 +95,8 @@ int main(int argc, char *argv[]) {
     _game.run(*_player1, *_player2, count);
 
     std::cout.rdbuf(coutbuf);
+
+    delete _player1;
+    delete _player2;
     return 0;
 }

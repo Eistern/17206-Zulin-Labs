@@ -1,9 +1,9 @@
 #include "RandomGamer.h"
 #include <random>
+#include <ctime>
 
 std::vector<unsigned int> RandomGamer::setShip() {
-    static std::random_device seedGen;
-    static std::default_random_engine generator(seedGen());
+    static std::default_random_engine generator(static_cast<unsigned int>(time(nullptr)));
     static std::uniform_int_distribution<unsigned int> distribution(0,9);
     unsigned int x = distribution(generator);
     unsigned int y = distribution(generator);
@@ -12,8 +12,7 @@ std::vector<unsigned int> RandomGamer::setShip() {
 }
 
 std::vector<unsigned int> RandomGamer::hitShip(const Board& none) {
-    static std::random_device seedGen;
-    static std::default_random_engine generator(seedGen());
+    static std::default_random_engine generator(static_cast<unsigned int>(time(nullptr)));
     static std::uniform_int_distribution<unsigned int> distribution(0,9);
     unsigned int x = distribution(generator);
     unsigned int y = distribution(generator);

@@ -33,6 +33,7 @@ void Battleships::run(Gamer &player1, Gamer &player2, int count) const {
         else
             screen->sendMessage("First player wins!");
     }
+    delete screen;
 }
 
 void Battleships::placeStage(Gamer &player, Board &playerBoard, const GameView &screen) const {
