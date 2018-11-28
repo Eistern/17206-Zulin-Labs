@@ -17,21 +17,6 @@ std::vector<unsigned int> OptimalGamer::_findNext() const {
     return {pos % 10, pos / 10};
 }
 
-std::vector<unsigned int> OptimalGamer::_continueHit() const {
-    if (!_reverse) {
-        if (_hitDirection == 1)
-            return {_previousHit[0] + 1, _previousHit[1]};
-        else
-            return {_previousHit[0], _previousHit[1] + 1};
-    } else {
-        if (_hitDirection == 1)
-            return {_previousHit[0] - 1, _previousHit[1]};
-        else
-            return {_previousHit[0], _previousHit[1] - 1};
-    }
-
-}
-
 void OptimalGamer::_updateMax(const Board &opponentBoard) {
     int count[5] = {0};
     int size = 0;
@@ -64,82 +49,45 @@ void OptimalGamer::_updateMax(const Board &opponentBoard) {
         _maxUnfound = 1;
 }
 
-void OptimalGamer::_markShip(std::vector<unsigned int> choice, int size) {
-    if (choice[2] == 1) {
-        for (int i = (int)choice[0] - 1; i <= (int)choice[0] + size; ++i)
-            for (int j = (int)choice[1] - 1; j <= (int)choice[1] + 1; ++j)
-                if ((i >= 0 && i < 10) && (j >= 0 && j < 10))
-                    _permitted[i][j] = false;
-    } else {
-        for (int j = (int)choice[1] - 1; j <= (int)choice[1] + size; ++j)
-            for (int i = (int)choice[0] - 1; i <= (int)choice[0] + 1; ++i)
-                if ((i >= 0 && i < 10) && (j >= 0 && j < 10))
-                    _permitted[i][j] = false;
-    }
+std::vector<unsigned int> OptimalGamer::_continueHit() const {
+    std::vector<unsigned int> choice = _previousHits.back();
+    int shift = _reverse ? -1 : 1;
+    if (_hitDirection == 1)
+        choice[0] += shift;
+    else
+        choice[1] += shift;
+
+    return choice;
 }
 
-bool OptimalGamer::_correctInfo(const Board &opponentBoard, std::vector<unsigned int> position) {
-    int size = 0;
-    unsigned x = position[0], y = position[1];
-    if (_hitDirection == 1) {
-        x--;
-        while (x >= 0 && opponentBoard.getInfo({x, y}) == 3) {
-            size++;
-            x--;
-        }
-    } else {
-        y--;
-        while (y >= 0 && opponentBoard.getInfo({x, y}) == 3) {
-            size++;
-            y--;
-        }
-    }
-    if ((size != 0) && (x < 0 || y < 0 || opponentBoard.getInfo({x, y}) == 2)) {
-        if (_hitDirection == 1)
-            _markShip({x + 1, y}, size);
-        else
-            _markShip({x, y + 1}, size);
+bool OptimalGamer::_checkReverse(const Board &) {
+    auto it = _previousHits.rbegin();
+    unsigned int constCoord = _hitDirection == 1 ? 0 : 1;
+    int constValue = _previousHits.back()[constCoord];
+    it++;
 
-        _reverse = false;
-        _hitDirection = 1;
-        return true;
-    }
-    if (opponentBoard.getInfo({x, y}) == -1) {
-        if (size == 1)
-            _hitDirection = (_hitDirection + 1) % 2;
-        else {
-            _reverse = true;
-            if (_hitDirection == 1)
-                _previousHit = {x + 1, y};
-            else
-                _previousHit = {x, y + 1};
-        }
-    }
-    return false;
+    if (it != _previousHits.rend() && it.operator*().at(constCoord) == constValue)
+        return false;
+
+    _reverse = true;
+    _previousHits.reverse();
+    return true;
 }
 
-std::vector<unsigned int> OptimalGamer::hitShip(const Board& important) {
-    _updateMax(important);
+std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
+    _updateMax(opponentBoard);
+    std::vector<unsigned int> predict;
 
-    if (important.getInfo(_previousHit) == 3) {
-        //Сделать удар в зависимости направления и реверса, если возможно, иначе отметить и найти новое место
-        _previousHit = _continueHit();
-    } else {
-        bool isDead = _correctInfo(important, _previousHit);
-        if (isDead)
-            _previousHit = _findNext();
-        else
-            _previousHit = _continueHit();
-        //Проверить, подбит ли корабль, если подбит, то изменть _permitted и найти новую координату с помощью findNext
-        //Если не подбит и длина не 1, то сделать _reverse
-        //Если длина равна 1, то... пропустить
+    if (opponentBoard.getInfo(_previousHits.back()) == 3) {
+        predict = _continueHit();
+        if (!((predict[0] >= 0 && predict[0] < 10) && (predict[1] >= 0 && predict[1] < 10)))
+            if
     }
 
-    return _previousHit;
+    _previousHits.push_back(predict);
+    return predict;
 }
 
 std::vector<unsigned int> OptimalGamer::setShip() {
-//    std::vector<unsigned int> choice(3);
-//
-//    return choice;
+
 }
