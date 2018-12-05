@@ -1,6 +1,11 @@
 #include "Board.h"
 
+#define MIN_INT -2147483647
+
 int Board::getInfo(std::vector<unsigned int> choice) const {
+    if (!((choice[0] >= 0 && choice[0] < 10) && (choice[1] >= 0 && choice[1] < 10)))
+        return MIN_INT;
+
     if (!gameStarted)
         return _board[choice[0]][choice[1]];
     else if (_board[choice[0]][choice[1]] == 2 || _board[choice[0]][choice[1]] == 3)

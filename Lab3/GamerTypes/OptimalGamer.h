@@ -16,7 +16,8 @@ public:
 private:
     void _updateMax(const Board&);
     void _markShip();
-    bool _checkReverse(const Board&);
+    bool _changeReverse();
+    bool _updateDir(const Board &);
     std::vector<unsigned int> _findNext() const;
     std::vector<unsigned int> _continueHit() const;
 };
