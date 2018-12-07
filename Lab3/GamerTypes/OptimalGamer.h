@@ -10,13 +10,19 @@ class OptimalGamer : public Gamer {
     int _maxUnfound = 4;
     int _hitDirection = 1;
     bool _reverse = false;
+    bool _initialized = false;
 public:
-    std::vector<unsigned int> setShip() override;
-    std::vector<unsigned int> hitShip(const Board&) override;
+    OptimalGamer() {
+        for (auto i : _permitted)
+            for (int j = 0; j < 10; ++j)
+                i[j] = true;
+    }
+    std::vector<unsigned int> setShip(const Board &, int) override;
+    std::vector<unsigned int> hitShip(const Board &) override;
 private:
     void _updateMax(const Board&);
     void _markShip();
-    bool _changeReverse();
+    void _changeReverse();
     bool _updateDir(const Board &);
     std::vector<unsigned int> _findNext() const;
     std::vector<unsigned int> _continueHit() const;

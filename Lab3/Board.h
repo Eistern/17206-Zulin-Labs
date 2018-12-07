@@ -10,9 +10,9 @@ class Board {
     int _board[10][10] = {{0}};
 public:
     int getInfo(std::vector<unsigned int>) const;
-    void setShip(std::vector<unsigned int>, int size);
+    void setShip(std::vector<unsigned int>, int);
     bool hitShip(std::vector<unsigned int>);
-    bool validateSet(std::vector<unsigned int>, int size) const;
+    bool validateSet(std::vector<unsigned int>, int) const;
     bool validateHit(std::vector<unsigned int>) const;
     bool isWin() const;
 };

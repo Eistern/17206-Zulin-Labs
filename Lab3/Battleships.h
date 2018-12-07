@@ -8,10 +8,10 @@
 
 class Battleships {
 public:
-    void run(Gamer &player1, Gamer &player2, int count) const;
+    void run(Gamer &, Gamer &, int) const;
 private:
-    void placeStage(Gamer&, Board&, const GameView &screen) const;
-    bool hitStage(Gamer&, Board&, const GameView &screen) const;
+    void placeStage(Gamer&, Board&, const GameView &) const;
+    bool hitStage(Gamer&, Board&, const GameView &) const;
 };
 
 

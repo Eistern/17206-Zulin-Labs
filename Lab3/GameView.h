@@ -6,7 +6,7 @@
 
 class GameView {
 public:
-    virtual void sendMessage(const std::string &message) const = 0;
+    virtual void sendMessage(const std::string &) const = 0;
     virtual void printBoard(const Board&) const = 0;
     virtual ~GameView() = default;
 };

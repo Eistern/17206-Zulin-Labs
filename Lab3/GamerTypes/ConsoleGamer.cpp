@@ -1,7 +1,7 @@
 #include "ConsoleGamer.h"
 #include <iostream>
 
-std::vector<unsigned int> ConsoleGamer::setShip() {
+std::vector<unsigned int> ConsoleGamer::setShip(const Board &playerBoard, const int length) {
     int x;
     unsigned char y, dir;
     std::cout << "Please input coord of your next ship(line/row/direction):\n";
@@ -14,10 +14,22 @@ std::vector<unsigned int> ConsoleGamer::setShip() {
     result[0] = static_cast<unsigned int>(x);
     result[1] = y - 'A';
     result[2] = dir == 'H' ? 0 : 1;
+    while (!playerBoard.validateSet(result, length)) {
+        std::cout << "Invalid place, please try again" << std::endl;
+        std::cin >> x >> y >> dir;
+        while (!(x >= 0 && x < 10) || !(y >= 'A' && y <= 'J') || !(dir == 'H' || dir == 'W')) {
+            std::cout << "Invalid format, please try again" << std::endl;
+            std::cin >> x >> y >> dir;
+        }
+        result[0] = static_cast<unsigned int>(x);
+        result[1] = y - 'A';
+        result[2] = dir == 'H' ? 0 : 1;
+    }
+
     return result;
 }
 
-std::vector<unsigned int> ConsoleGamer::hitShip(const Board& checker) {
+std::vector<unsigned int> ConsoleGamer::hitShip(const Board &playerBoard) {
     int x;
     unsigned char y;
     std::cout << "Please input coord of your hit(line/row): ";
@@ -29,7 +41,7 @@ std::vector<unsigned int> ConsoleGamer::hitShip(const Board& checker) {
     std::vector<unsigned int> result(2);
     result[0] = static_cast<unsigned int>(x);
     result[1] = y - 'A';
-    while (!checker.validateHit(result)) {
+    while (!playerBoard.validateHit(result)) {
         std::cout << "Invalid placement, please try again" << std::endl;
         std::cin >> x >> y;
         while (!(x >= 0 && x < 10) || !(y >= 'A' && y <= 'J')) {

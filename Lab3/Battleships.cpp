@@ -43,11 +43,11 @@ void Battleships::placeStage(Gamer &player, Board &playerBoard, const GameView &
     for (int length = 1; length < 5; ++length)
         for (int j = 0; j < 5 - length; ++j) {
             screen.printBoard(playerBoard);
-            currentChoice = player.setShip();
+            currentChoice = player.setShip(playerBoard, length);
 
             while (!playerBoard.validateSet(currentChoice, length)) {
                 screen.sendMessage("Invalid placement, please try again\n");
-                currentChoice = player.setShip();
+                currentChoice = player.setShip(playerBoard, length);
             }
 
             playerBoard.setShip(currentChoice, length);

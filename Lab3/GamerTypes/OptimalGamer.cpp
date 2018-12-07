@@ -1,4 +1,6 @@
 #include "OptimalGamer.h"
+#include <random>
+#include <ctime>
 
 #define CRITICAL_COUNT 25
 
@@ -60,7 +62,7 @@ std::vector<unsigned int> OptimalGamer::_continueHit() const {
     return choice;
 }
 
-bool OptimalGamer::_changeReverse() {
+void OptimalGamer::_changeReverse() {
     _reverse = !_reverse;
     _previousHits.reverse();
 }
@@ -85,7 +87,7 @@ bool OptimalGamer::_updateDir(const Board &opponentBoard) {
     if (_previousHits.size() != 1) {
         _changeReverse();
         test = _continueHit();
-        if (opponentBoard.getInfo(test) == 2)
+        if (!_permitted[test[0]][test[1]] || opponentBoard.getInfo(test) == 2)
             return false;
     } else {
         if (_hitDirection == 1) {
@@ -108,7 +110,15 @@ bool OptimalGamer::_updateDir(const Board &opponentBoard) {
 
 std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
     _updateMax(opponentBoard);
-    std::vector<unsigned int> predict;
+    std::vector<unsigned int> predict(2);
+
+    if (!_initialized) {
+        _initialized = true;
+        predict[0] = 5;
+        predict[1] = 5;
+        _previousHits.push_back(predict);
+        return predict;
+    }
 
     if (opponentBoard.getInfo(_previousHits.back()) == 3) {
         predict = _continueHit();
@@ -116,25 +126,37 @@ std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
             _markShip();
             predict = _findNext();
         } else if (!((predict[0] >= 0 && predict[0] < 10) && (predict[1] >= 0 && predict[1] < 10))) {
-            _changeReverse();
-            predict = _continueHit();
-            if (opponentBoard.getInfo(predict) == 2 || !_permitted[predict[0]][predict[1]]) {
+            bool notDead = _updateDir(opponentBoard);
+            if (notDead)
+                predict = _continueHit();
+            else {
                 _markShip();
                 predict = _findNext();
             }
         }
     } else {
+        _permitted[_previousHits.back()[0]][_previousHits.back()[1]] = false;
         _previousHits.pop_back();
         if (_previousHits.empty()) {
-            _permitted[_previousHits.back()[0]][_previousHits.back()[1]] = false;
             predict = _findNext();
         }
         else {
             bool notDead = _updateDir(opponentBoard);
-            if (notDead)
+            if (notDead) {
                 predict = _continueHit();
-            else
+                while ((!_permitted[predict[0]][predict[1]] || opponentBoard.getInfo(predict) == 2) && notDead) {
+                    notDead = _updateDir(opponentBoard);
+                    predict = _continueHit();
+                }
+                if (!notDead) {
+                    _markShip();
+                    predict = _findNext();
+                }
+            }
+            else {
+                _markShip();
                 predict = _findNext();
+            }
         }
     }
 
@@ -142,6 +164,26 @@ std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
     return predict;
 }
 
-std::vector<unsigned int> OptimalGamer::setShip() {
-
+std::vector<unsigned int> OptimalGamer::setShip(const Board &playerBoard, const int length) {
+    unsigned int shift = 0;
+    static std::default_random_engine generator(static_cast<unsigned int>(time(nullptr)));
+    static std::uniform_int_distribution<unsigned int> distribution(0,9);
+    unsigned int dir = distribution(generator) % 2;
+    unsigned int startX = distribution(generator);
+    unsigned int startY = distribution(generator);
+    while (!playerBoard.validateSet({startX, startY, dir}, length)) {
+        startX++;
+        if (startX >= 10) {
+            startX = 0;
+            startY++;
+        }
+        if (startY >= 10) {
+            startX = shift;
+            startY = shift;
+            shift++;
+        }
+        if (shift > CRITICAL_COUNT)
+            dir = (dir + 1) % 2;
+    }
+    return {startX, startY, dir};
 }
