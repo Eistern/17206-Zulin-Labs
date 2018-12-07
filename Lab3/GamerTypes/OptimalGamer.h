@@ -23,6 +23,7 @@ private:
     void _updateMax(const Board&);
     void _markShip();
     void _changeReverse();
+    bool _correctPredict(std::vector<unsigned int>) const;
     bool _updateDir(const Board &);
     std::vector<unsigned int> _findNext() const;
     std::vector<unsigned int> _continueHit() const;

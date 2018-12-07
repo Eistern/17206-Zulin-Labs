@@ -3,6 +3,7 @@
 #include <ctime>
 
 #define CRITICAL_COUNT 25
+#define MIN_INT (-2147483647)
 
 std::vector<unsigned int> OptimalGamer::_findNext() const {
     unsigned int pos = 0;
@@ -87,7 +88,7 @@ bool OptimalGamer::_updateDir(const Board &opponentBoard) {
     if (_previousHits.size() != 1) {
         _changeReverse();
         test = _continueHit();
-        if (!_permitted[test[0]][test[1]] || opponentBoard.getInfo(test) == 2)
+        if (!_permitted[test[0]][test[1]] || opponentBoard.getInfo(test) == 2 || opponentBoard.getInfo(test) == MIN_INT)
             return false;
     } else {
         if (_hitDirection == 1) {
@@ -103,9 +104,12 @@ bool OptimalGamer::_updateDir(const Board &opponentBoard) {
             else
                 _reverse = true;
         }
-
     }
     return true;
+}
+
+bool inline OptimalGamer::_correctPredict(std::vector<unsigned int> predict) const {
+    return ((predict[0] >= 0 && predict[0] < 10) && (predict[1] >= 0 && predict[1] < 10));
 }
 
 std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
@@ -125,7 +129,7 @@ std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
         if (_previousHits.size() == 4) {
             _markShip();
             predict = _findNext();
-        } else if (!((predict[0] >= 0 && predict[0] < 10) && (predict[1] >= 0 && predict[1] < 10))) {
+        } else if (!_correctPredict(predict)) {
             bool notDead = _updateDir(opponentBoard);
             if (notDead)
                 predict = _continueHit();
@@ -144,7 +148,7 @@ std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
             bool notDead = _updateDir(opponentBoard);
             if (notDead) {
                 predict = _continueHit();
-                while ((!_permitted[predict[0]][predict[1]] || opponentBoard.getInfo(predict) == 2) && notDead) {
+                while ((!_correctPredict(predict) && notDead) || ((!_permitted[predict[0]][predict[1]] || opponentBoard.getInfo(predict) == 2) && notDead)) {
                     notDead = _updateDir(opponentBoard);
                     predict = _continueHit();
                 }
