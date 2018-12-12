@@ -2,20 +2,28 @@
 #include <fstream>
 #include <tuple>
 
-template <int Ind, class... Types> auto getValue(std::tuple<Types...> const& t) {
-    return std::get<Ind>(t);
-}
+template<int Ind, class CharT, class Traits, class... Types> struct forEach {
+    void printElement(std::basic_ostream<CharT, Traits>& os, std::tuple<Types...> const& t) {
+        forEach<Ind - 1, CharT, Traits, Types...> prev;
+        prev.printElement(os, t);
+        os << std::get<Ind>(t) << " ";
+    }
+};
 
-template <class CharT, class Traits, class... Types> auto operator<<(std::basic_ostream<CharT, Traits>& os, std::tuple<Types...> const& t) {
+template<class CharT, class Traits, class... Types> struct forEach<0, CharT, Traits, Types...> {
+    void printElement(std::basic_ostream<CharT, Traits>& os, std::tuple<Types...> const& t) {
+        os << std::get<0>(t) << " ";
+    }
+};
+
+template <class CharT, class Traits, class... Types> auto& operator<<(std::basic_ostream<CharT, Traits>& os, std::tuple<Types...> const& t) {
     int typesLength = sizeof...(Types);
-    for (int i = 0; i < typesLength; ++i)
-        const auto buff = std::get<i, Types...>(t);
-
+    forEach<1, CharT, Traits, Types...> printer;
+    printer.printElement(os, t);
     return os;
 }
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    std::cout << std::make_tuple(1, "Lol", 3.0) << std::endl;
+    std::cout << std::make_tuple(1, "Test", 3.0) << std::endl;
     return 0;
 }
