@@ -1,6 +1,7 @@
 #include "OptimalGamer.h"
 #include <random>
 #include <ctime>
+#include <iostream>
 
 #define CRITICAL_COUNT 25
 #define MIN_INT (-2147483647)
@@ -151,6 +152,7 @@ std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
                 while ((!_correctPredict(predict) && notDead) || ((!_permitted[predict[0]][predict[1]] || opponentBoard.getInfo(predict) == 2) && notDead)) {
                     notDead = _updateDir(opponentBoard);
                     predict = _continueHit();
+                    std::cerr << predict[0] << " " << predict[1] << std::endl;
                 }
                 if (!notDead) {
                     _markShip();
@@ -169,25 +171,16 @@ std::vector<unsigned int> OptimalGamer::hitShip(const Board &opponentBoard) {
 }
 
 std::vector<unsigned int> OptimalGamer::setShip(const Board &playerBoard, const int length) {
-    unsigned int shift = 0;
     static std::default_random_engine generator(static_cast<unsigned int>(time(nullptr)));
     static std::uniform_int_distribution<unsigned int> distribution(0,9);
+    unsigned int x = distribution(generator);
+    unsigned int y = distribution(generator);
     unsigned int dir = distribution(generator) % 2;
-    unsigned int startX = distribution(generator);
-    unsigned int startY = distribution(generator);
-    while (!playerBoard.validateSet({startX, startY, dir}, length)) {
-        startX++;
-        if (startX >= 10) {
-            startX = 0;
-            startY++;
-        }
-        if (startY >= 10) {
-            startX = shift;
-            startY = shift;
-            shift++;
-        }
-        if (shift > CRITICAL_COUNT)
-            dir = (dir + 1) % 2;
+    while (!playerBoard.validateSet({x, y, dir}, length)) {
+        x = distribution(generator);
+        y = distribution(generator);
+        dir = distribution(generator) % 2;
     }
-    return {startX, startY, dir};
+
+    return {x, y, dir};
 }
