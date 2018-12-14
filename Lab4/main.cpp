@@ -16,9 +16,15 @@ template<class CharT, class Traits, class... Types> struct forEach<0, CharT, Tra
     }
 };
 
+template<class CharT, class Traits, class... Types> struct forEach<-1, CharT, Traits, Types...> {
+    void printElement(std::basic_ostream<CharT, Traits>& os, std::tuple<Types...> const& t) {
+
+    }
+};
+
 template <class CharT, class Traits, class... Types> auto& operator<<(std::basic_ostream<CharT, Traits>& os, std::tuple<Types...> const& t) {
-    int typesLength = sizeof...(Types);
-    forEach<1, CharT, Traits, Types...> printer;
+    const int tupleSize = sizeof...(Types);
+    forEach<tupleSize - 1, CharT, Traits, Types...> printer;
     printer.printElement(os, t);
     return os;
 }
