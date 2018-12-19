@@ -44,7 +44,8 @@ const option::Descriptor usage[] = {
         {ROUNDS, 0,      "c", "count",  Numeric,           "-c, --count \t|Defines number of rounds \t|Default: 1"},
         {PLAYER, FIRST,  "f", "first",  PlayerType,        "-f, --first \t|Defines type of first player \t|Default: random"},
         {PLAYER, SECOND, "s", "second", PlayerType,        "-s, --second \t|Defines type of second player \t|Default: random"},
-        {HELP,   0,      "h", "help",   option::Arg::None, "-h, --help \t|Prints out usage of options"}
+        {HELP,   0,      "h", "help",   option::Arg::None, "-h, --help \t|Prints out usage of options"},
+        {0, 0, 0, 0, 0, 0}
 };
 
 int main(int argc, char *argv[]) {
@@ -86,15 +87,15 @@ int main(int argc, char *argv[]) {
     if (_player2 == nullptr)
         _player2 = new RandomGamer;
 
-    std::ofstream out("log.txt");
-    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to log.txt!
+//    std::ofstream out("log.txt");
+//    std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+//    std::cout.rdbuf(out.rdbuf()); //redirect std::cout to log.txt!
 
 
     Battleships _game;
     _game.run(*_player1, *_player2, count);
 
-    std::cout.rdbuf(coutbuf);
+//    std::cout.rdbuf(coutbuf);
 
     delete _player1;
     delete _player2;

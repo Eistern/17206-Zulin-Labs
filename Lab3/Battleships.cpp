@@ -1,7 +1,9 @@
 #include "Battleships.h"
 #include "ViewTypes/ConsoleView.h"
 
+#include <iostream>
 void Battleships::run(Gamer &player1, Gamer &player2, int count) const {
+    std::cout << "RUN!" << std::endl;
     GameView* screen = new ConsoleView;
     for (int i = 0; i < count; ++i) {
         Board firstBoard;

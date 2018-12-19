@@ -5,6 +5,26 @@
 #include <fstream>
 #include "tuple"
 
+template<int Ind, class... Types> struct _StringParser {
+    void parse(std::ifstream &_fin, std::tuple<Types...> &to) {
+        _StringParser<Ind - 1, Types...> prev;
+        prev.parse(_fin, to);
+
+        _fin >> std::get<Ind>(to);
+    }
+};
+template<class... Types> struct _StringParser<0, Types...> {
+    void parse(std::ifstream &_fin, std::tuple<Types...> &to) {
+        _fin >> std::get<0>(to);
+    }
+};
+
+template<class... Types> struct _StringParser<-1, Types...> {
+    void parse(std::ifstream &_fin, std::tuple<Types...> &to) {
+        _fin >> std::get<0>(to);
+    }
+};
+
 template<class... Types> class CSVParser {
     std::ifstream &_fin;
     int _shift;
@@ -16,33 +36,20 @@ public:
         std::ifstream &_fin;
         std::tuple<Types...> _current;
 
-        template<int Ind> struct _StringParser {
-            void parse(std::tuple<Types...>& to, std::ifstream &_fin) {
-                _StringParser<Ind - 1> prev;
-                prev.parse(to, _fin);
-
-                _fin >> std::get<Ind>(to);
-            }
-        };
-        template<> struct _StringParser<0> {
-            void parse(std::tuple<Types...>& to, std::ifstream &_fin) {
-                _fin >> std::get<0>(to);
-            }
-        };
     public:
         _ParserIterator(CSVParser *creator ,std::ifstream& src) :_parent(creator), _fin(src) {
             if (!src.eof()) {
                 const int tupleLen = sizeof...(Types);
 
-                _StringParser<tupleLen - 1> parser;
-                parser.parse(_current, tupleLen);
+                _StringParser<tupleLen - 1, Types...> parser;
+                parser.parse(_fin, _current);
             }
         };
         void operator++ () {
             const int tupleLen = sizeof...(Types);
 
-            _StringParser<tupleLen - 1> parser;
-            parser.parse(_current, tupleLen);
+            _StringParser<tupleLen - 1, Types...> parser;
+            parser.parse(_fin, _current);
         };
         std::tuple<Types...> operator* () {
             return _current;
