@@ -5,9 +5,9 @@
 
 int main() {
     std::ifstream fin("test.csv");
-    CSVParser<int, std::string> parser(fin, 0);
+    CSVParser<double, std::string> parser(fin, 0);
     for (auto pIt : parser)
-        std::cout << pIt;
+        std::cout << pIt << std::endl;
 
     return 0;
 }

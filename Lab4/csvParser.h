@@ -32,12 +32,13 @@ public:
     CSVParser(std::ifstream &fin, int shift) : _shift(shift), _fin(fin) {};
 
     class _ParserIterator {
+        int _shift;
         CSVParser *_parent;
         std::ifstream &_fin;
         std::tuple<Types...> _current;
 
     public:
-        _ParserIterator(CSVParser *creator ,std::ifstream& src) :_parent(creator), _fin(src) {
+        _ParserIterator(int shift, CSVParser *creator ,std::ifstream& src) :_shift(shift), _parent(creator), _fin(src) {
             if (!src.eof()) {
                 const int tupleLen = sizeof...(Types);
 
@@ -50,6 +51,9 @@ public:
 
             _StringParser<tupleLen - 1, Types...> parser;
             parser.parse(_fin, _current);
+            _shift++;
+            if (_fin.eof())
+                _shift = -1;
         };
         std::tuple<Types...> operator* () {
             return _current;
@@ -60,9 +64,8 @@ public:
         bool operator== (const _ParserIterator &second) const {
             if (_parent != second._parent)
                 return false;
-            int cur1 = _fin.seekg(0, _fin.cur).tellg();
-            int cur2 = second._fin.seekg(0, second._fin.cur).tellg();
-            return cur1 == cur2;
+
+            return _shift == second._shift;
         }
 
         bool operator != (const _ParserIterator &second) const {
@@ -78,14 +81,16 @@ public:
         for (int i = 0; i < _shift; i++)
             std::getline(_finCopy, buff);
 
-        return _ParserIterator(this, _finCopy);
+        return _ParserIterator(_shift, this, _finCopy);
     };
+
     _ParserIterator end() {
         std::ifstream &_finCopy = _fin;
         _finCopy.seekg(0, _finCopy.end);
-        return _ParserIterator(this, _finCopy);
+        return _ParserIterator(-1, this, _finCopy);
     };
 };
+
 
 
 #endif //LAB4_CSVPARSER_H
