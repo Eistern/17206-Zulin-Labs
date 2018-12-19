@@ -1,7 +1,8 @@
 #ifndef LAB4_CSVPARSER_H
 #define LAB4_CSVPARSER_H
 
-#include "fstream"
+#include <string>
+#include <fstream>
 #include "tuple"
 
 template<class... Types> class CSVParser {
@@ -11,44 +12,80 @@ public:
     CSVParser(std::ifstream &fin, int shift) : _shift(shift), _fin(fin) {};
 
     class _ParserIterator {
-        std::tuple<Types...> _out;
-        template<int Ind> class StringParser {
-            void parse() {
+        CSVParser *_parent;
+        std::ifstream &_fin;
+        std::tuple<Types...> _current;
 
+        template<int Ind> struct _StringParser {
+            void parse(std::tuple<Types...>& to, std::ifstream &_fin) {
+                _StringParser<Ind - 1> prev;
+                prev.parse(to, _fin);
+
+                _fin >> std::get<Ind>(to);
             }
         };
-        template<> class StringParser<0> {
-            void parse() {
-
+        template<> struct _StringParser<0> {
+            void parse(std::tuple<Types...>& to, std::ifstream &_fin) {
+                _fin >> std::get<0>(to);
             }
         };
     public:
-        void operator++ () {
+        _ParserIterator(CSVParser *creator ,std::ifstream& src) :_parent(creator), _fin(src) {
+            if (!src.eof()) {
+                const int tupleLen = sizeof...(Types);
 
+                _StringParser<tupleLen - 1> parser;
+                parser.parse(_current, tupleLen);
+            }
+        };
+        void operator++ () {
+            const int tupleLen = sizeof...(Types);
+
+            _StringParser<tupleLen - 1> parser;
+            parser.parse(_current, tupleLen);
         };
         std::tuple<Types...> operator* () {
-            const int tupleSize = sizeof... (Types);
-            StringParser<tupleSize - 1> parser;
-            parser.parse();
-            return _out;
+            return _current;
         };
         std::tuple<Types...>* operator-> () {
-
+            return &(_current);
         };
-    };
-    _ParserIterator begin() {
+        bool operator== (const _ParserIterator &second) const {
+            if (_parent != second._parent)
+                return false;
 
+            std::ifstream &firstCopy = _fin;
+            std::ifstream &secondCopy = second._fin;
+            char firstBuff, secondBuff;
+
+            while (!firstCopy.eof() && !secondCopy.eof()) {
+                firstCopy >> firstBuff;
+                secondCopy >> secondBuff;
+            }
+
+            return firstCopy.eof() && secondCopy.eof();
+        }
+
+        bool operator != (const _ParserIterator &second) const {
+            return !(*(this) == second);
+        }
+    };
+
+    _ParserIterator begin() {
+        std::ifstream &_finCopy = _fin;
+        _finCopy.seekg(0, _finCopy.beg);
+
+        std::string buff;
+        for (int i = 0; i < _shift; i++)
+            std::getline(_finCopy, buff);
+
+        return _ParserIterator(this, _finCopy);
     };
     _ParserIterator end() {
-
+        std::ifstream &_finCopy = _fin;
+        _finCopy.seekg(0, _finCopy.end);
+        return _ParserIterator(this, _finCopy);
     };
-
-    bool operator== (const _ParserIterator &first, const _ParserIterator &second) const {
-
-    }
-    bool operator!= (const _ParserIterator &first, const _ParserIterator &second) const {
-        return !(first == second);
-    }
 };
 
 
