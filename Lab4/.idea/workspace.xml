@@ -11,10 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2efcaa4-d2bc-4b04-b125-b05bd99d6ff3" name="Default Changelist" comment="19.12 Classwork">
-      <change beforePath="$PROJECT_DIR$/../Lab3/Battleships.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/Battleships.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab3/GamerTypes/GamerFactory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/GamerTypes/GamerFactory.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab3/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab3/main.cpp" afterDir="false" />
+    <list default="true" id="a2efcaa4-d2bc-4b04-b125-b05bd99d6ff3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/csvParser.h" beforeDir="false" afterPath="$PROJECT_DIR$/csvParser.h" afterDir="false" />
     </list>
@@ -52,13 +49,14 @@
         <counts>
           <entry key="cpp" value="112" />
           <entry key="csv" value="13" />
-          <entry key="h" value="1826" />
+          <entry key="h" value="1961" />
+          <entry key="mm" value="8" />
           <entry key="txt" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="1938" />
+          <entry key="ObjectiveC" value="2081" />
           <entry key="PLAIN_TEXT" value="35" />
         </counts>
       </usages-collector>
@@ -66,23 +64,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cmake-build-debug/test.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -102,18 +91,27 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/csvParser.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="708">
-              <caret line="47" column="28" lean-forward="true" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
+            <state relative-caret-position="399">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
               <folding>
                 <element signature="e#51#68#0" expanded="true" />
                 <element signature="e#114#139#0" expanded="true" />
-                <element signature="e#347#363#0" expanded="true" />
-                <element signature="e#515#531#0" expanded="true" />
+                <element signature="e#357#373#0" expanded="true" />
+                <element signature="e#525#541#0" expanded="true" />
                 <element signature="e#96#112#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cmake-build-debug/test.csv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -128,8 +126,8 @@
       <list>
         <option value="$PROJECT_DIR$/tuplePrinter.h" />
         <option value="$PROJECT_DIR$/main.cpp" />
-        <option value="$PROJECT_DIR$/csvParser.h" />
         <option value="$PROJECT_DIR$/cmake-build-debug/test.csv" />
+        <option value="$PROJECT_DIR$/csvParser.h" />
       </list>
     </option>
   </component>
@@ -216,7 +214,7 @@
       <option name="presentableId" value="Default" />
       <updated>1544853143575</updated>
       <workItem from="1544853145345" duration="7249000" />
-      <workItem from="1545198098228" duration="4673000" />
+      <workItem from="1545198098228" duration="5685000" />
     </task>
     <task id="LOCAL-00001" summary="15.12 Classwork">
       <created>1544857882513</created>
@@ -232,11 +230,18 @@
       <option name="project" value="LOCAL" />
       <updated>1545201496959</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="19.12 Classwork">
+      <created>1545202951734</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1545202951734</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11922000" />
+    <option name="totallyTimeSpent" value="12934000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1052" extended-state="6" />
@@ -247,8 +252,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.3297062" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.3297062" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39934713" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -297,7 +302,34 @@
     <MESSAGE value="19.12 Classwork" />
     <option name="LAST_COMMIT_MESSAGE" value="19.12 Classwork" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/csvParser.h</url>
+          <line>63</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>firstCopy.peek()</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/test.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tuplePrinter.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -311,33 +343,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/csvParser.h">
+    <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="708">
-          <caret line="47" column="28" lean-forward="true" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
-            <element signature="e#51#68#0" expanded="true" />
-            <element signature="e#114#139#0" expanded="true" />
-            <element signature="e#347#363#0" expanded="true" />
-            <element signature="e#515#531#0" expanded="true" />
-            <element signature="e#96#112#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/test.csv">
+    <entry file="file://$PROJECT_DIR$/csvParser.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        <state relative-caret-position="399">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#51#68#0" expanded="true" />
+            <element signature="e#114#139#0" expanded="true" />
+            <element signature="e#357#373#0" expanded="true" />
+            <element signature="e#525#541#0" expanded="true" />
+            <element signature="e#96#112#0" expanded="true" />
           </folding>
         </state>
       </provider>

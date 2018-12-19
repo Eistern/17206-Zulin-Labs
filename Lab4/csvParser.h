@@ -60,17 +60,9 @@ public:
         bool operator== (const _ParserIterator &second) const {
             if (_parent != second._parent)
                 return false;
-
-            std::ifstream &firstCopy = _fin;
-            std::ifstream &secondCopy = second._fin;
-            char firstBuff, secondBuff;
-
-            while (!firstCopy.eof() && !secondCopy.eof()) {
-                firstCopy >> firstBuff;
-                secondCopy >> secondBuff;
-            }
-
-            return firstCopy.eof() && secondCopy.eof();
+            int cur1 = _fin.seekg(0, _fin.cur).tellg();
+            int cur2 = second._fin.seekg(0, second._fin.cur).tellg();
+            return cur1 == cur2;
         }
 
         bool operator != (const _ParserIterator &second) const {
