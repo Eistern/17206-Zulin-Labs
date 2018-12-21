@@ -38,33 +38,34 @@ template<class... Types> struct _StringParser<-1, Types...> {
 
 template<class... Types> class CSVParser {
     std::ifstream &_fin;
-    int _shift;
+    int _defaultShift;
+    int _currentShift;
     char _columnSep;
     char _lineSep;
 public:
     CSVParser(std::ifstream &fin, int shift, char column = ',', char line = '\n') :
-        _shift(shift), _fin(fin), _columnSep(column), _lineSep(line) {};
+        _defaultShift(shift), _fin(fin), _columnSep(column), _lineSep(line), _currentShift(shift) {};
 
     class _ParserIterator {
         int _shift;
         CSVParser *_parent;
-        std::ifstream &_fin;
         std::tuple<Types...> _current;
         char _columnSep;
         char _lineSep;
 
     public:
-        _ParserIterator(int shift, CSVParser *creator ,std::ifstream& src, char column = ',', char line = '\n') :
-                        _columnSep(column), _lineSep(line), _shift(shift), _parent(creator), _fin(src) {
-            if (!src.eof())
+        _ParserIterator(int shift, CSVParser *creator, char column, char line) :
+                        _columnSep(column), _lineSep(line), _shift(shift), _parent(creator) {
+            if (!creator->_endOfStream())
                 _tupleParse();
         };
         void operator++ () {
-            _tupleParse();
-
-            _shift++;
-            if (_fin.eof())
+            if (_parent->_endOfStream()) {
                 _shift = -1;
+                return;
+            }
+            _shift++;
+            _tupleParse();
         };
         std::tuple<Types...> operator* () {
             return _current;
@@ -87,30 +88,49 @@ public:
             const int tupleLen = sizeof...(Types);
 
             _StringParser<tupleLen - 1, Types...> parser;
-            std::string _newLine;
-            std::getline(_fin, _newLine, _lineSep);
+            std::string _newLine = _parent->_getline(_shift, _lineSep);
             std::stringstream _nextLine;
             _nextLine << _newLine;
             parser.parse(_columnSep, _nextLine, _current);
         }
     };
+    friend class _ParserIterator;
 
     _ParserIterator begin() {
-        std::ifstream &_finCopy = _fin;
-        _finCopy.seekg(0, _finCopy.beg);
+        _fin.seekg(0, _fin.beg);
 
         std::string buff;
-        for (int i = 0; i < _shift; i++)
-            std::getline(_finCopy, buff);
+        for (int i = 0; i < _defaultShift; i++)
+            std::getline(_fin, buff);
 
-        return _ParserIterator(_shift, this, _finCopy, _columnSep, _lineSep);
+        return _ParserIterator(_defaultShift, this, _columnSep, _lineSep);
     };
 
     _ParserIterator end() {
-        std::ifstream &_finCopy = _fin;
-        _finCopy.seekg(0, _finCopy.end);
-        return _ParserIterator(-1, this, _finCopy, _columnSep, _lineSep);
+        return _ParserIterator(-1, this, _columnSep, _lineSep);
     };
+private:
+    bool _endOfStream() {
+        return _fin.eof();
+    }
+    std::string _getline(int index, char lineSep) {
+        if (index == -1)
+            return "";
+
+        std::string buff;
+        if (index < _currentShift) {
+            _fin.seekg(0, _fin.beg);
+            for (int i = 0; i <= index; i++)
+                std::getline(_fin, buff, _lineSep);
+            _currentShift = index + 1;
+            return buff;
+        } else {
+            for (int i = 0; i <= index - _currentShift; i++)
+                std::getline(_fin, buff, _lineSep);
+            _currentShift = index + 1;
+            return buff;
+        }
+    }
 };
 
 
