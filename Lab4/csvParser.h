@@ -4,43 +4,34 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <cstring>
 #include "tuple"
 
 template<int Ind, class... Types> struct _StringParser {
-    void parse(const std::string &Separators, std::stringstream &_fin, std::tuple<Types...> &to) {
+    void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
         _StringParser<Ind - 1, Types...> prev;
-        prev.parse(Separators, _fin, to);
+        prev.parse(columnSep, _fin, to);
 
         std::stringstream _buffStream;
-        char c = 0;
+        std::string _buffString;
+        std::getline(_fin, _buffString, columnSep);
+        _buffStream << _buffString;
 
-        if (!_fin.eof())
-            _fin >> c;
-        while (!_fin.eof() && strchr(Separators.c_str(), c) == nullptr) {
-            _buffStream << c;
-            _fin >> c;
-        }
         _buffStream >> std::get<Ind>(to);
     }
 };
 template<class... Types> struct _StringParser<0, Types...> {
-    void parse(const std::string &Separators, std::stringstream &_fin, std::tuple<Types...> &to) {
+    void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
         std::stringstream _buffStream;
-        char c = 0;
+        std::string _buffString;
+        std::getline(_fin, _buffString, columnSep);
+        _buffStream << _buffString;
 
-        if (!_fin.eof())
-            _fin >> c;
-        while (!_fin.eof() && strchr(Separators.c_str(), c) == nullptr) {
-            _buffStream << c;
-            _fin >> c;
-        }
         _buffStream >> std::get<0>(to);
     }
 };
 
 template<class... Types> struct _StringParser<-1, Types...> {
-    void parse(const std::string &Separators, std::stringstream &_fin, std::tuple<Types...> &to) {
+    void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
 
     }
 };
@@ -48,22 +39,23 @@ template<class... Types> struct _StringParser<-1, Types...> {
 template<class... Types> class CSVParser {
     std::ifstream &_fin;
     int _shift;
-    std::string _columnSep;
-    std::string _lineSep;
+    char _columnSep;
+    char _lineSep;
 public:
-    CSVParser(std::ifstream &fin, int shift, std::string column = ",") :
-        _shift(shift), _fin(fin), _columnSep(std::move(column)) {};
+    CSVParser(std::ifstream &fin, int shift, char column = ',', char line = '\n') :
+        _shift(shift), _fin(fin), _columnSep(column), _lineSep(line) {};
 
     class _ParserIterator {
         int _shift;
         CSVParser *_parent;
         std::ifstream &_fin;
         std::tuple<Types...> _current;
-        std::string _columnSep;
+        char _columnSep;
+        char _lineSep;
 
     public:
-        _ParserIterator(int shift, CSVParser *creator ,std::ifstream& src, std::string column = ",") :
-                        _columnSep(std::move(column)), _shift(shift), _parent(creator), _fin(src) {
+        _ParserIterator(int shift, CSVParser *creator ,std::ifstream& src, char column = ',', char line = '\n') :
+                        _columnSep(column), _lineSep(line), _shift(shift), _parent(creator), _fin(src) {
             if (!src.eof())
                 _tupleParse();
         };
@@ -96,13 +88,10 @@ public:
 
             _StringParser<tupleLen - 1, Types...> parser;
             std::string _newLine;
-            std::getline(_fin, _newLine);
+            std::getline(_fin, _newLine, _lineSep);
             std::stringstream _nextLine;
             _nextLine << _newLine;
             parser.parse(_columnSep, _nextLine, _current);
-            _shift++;
-            if (_fin.eof())
-                _shift = -1;
         }
     };
 
@@ -114,13 +103,13 @@ public:
         for (int i = 0; i < _shift; i++)
             std::getline(_finCopy, buff);
 
-        return _ParserIterator(_shift, this, _finCopy, _columnSep);
+        return _ParserIterator(_shift, this, _finCopy, _columnSep, _lineSep);
     };
 
     _ParserIterator end() {
         std::ifstream &_finCopy = _fin;
         _finCopy.seekg(0, _finCopy.end);
-        return _ParserIterator(-1, this, _finCopy, _columnSep);
+        return _ParserIterator(-1, this, _finCopy, _columnSep, _lineSep);
     };
 };
 
