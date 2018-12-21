@@ -3,4 +3,4 @@ project(Lab4)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Lab4 main.cpp tuplePrinter.h csvParser.h)
+add_executable(Lab4 main.cpp tuplePrinter.h csvParser.h parserExceptions.h)

@@ -4,7 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "tuple"
+#include <tuple>
+#include "parserExceptions.h"
 
 template<int Ind, class... Types> struct _StringParser {
     void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
@@ -17,6 +18,8 @@ template<int Ind, class... Types> struct _StringParser {
         _buffStream << _buffString;
 
         _buffStream >> std::get<Ind>(to);
+        if (_buffStream.fail())
+            throw columnFailure(Ind);
     }
 };
 template<class... Types> struct _StringParser<0, Types...> {
@@ -27,6 +30,8 @@ template<class... Types> struct _StringParser<0, Types...> {
         _buffStream << _buffString;
 
         _buffStream >> std::get<0>(to);
+        if (_buffStream.fail())
+            throw columnFailure(0);
     }
 };
 
@@ -56,7 +61,7 @@ public:
     public:
         _ParserIterator(int shift, CSVParser *creator, char column, char line) :
                         _columnSep(column), _lineSep(line), _shift(shift), _parent(creator) {
-            if (!creator->_endOfStream())
+            if (_shift != -1 && !creator->_endOfStream())
                 _tupleParse();
         };
         void operator++ () {
@@ -91,7 +96,12 @@ public:
             std::string _newLine = _parent->_getline(_shift, _lineSep);
             std::stringstream _nextLine;
             _nextLine << _newLine;
-            parser.parse(_columnSep, _nextLine, _current);
+            try {
+                parser.parse(_columnSep, _nextLine, _current);
+            }
+            catch (const columnFailure &num) {
+                throw readFailure(num._columnNumber, _shift);
+            }
         }
     };
     friend class _ParserIterator;
