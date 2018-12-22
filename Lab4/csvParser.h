@@ -31,6 +31,8 @@ template<int Ind, class... Types> struct _StringParser {
 
         std::string _buffString;
         std::getline(_fin, _buffString, columnSep);
+        if (_buffString.empty())
+            throw columnFailure(Ind);
 
         using currentType = typename std::tuple_element<Ind, std::tuple<Types...>>::type;
         _TuplePlacer<currentType, Ind, Types...>::place(_buffString, to);
@@ -40,6 +42,8 @@ template<class... Types> struct _StringParser<0, Types...> {
     void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
         std::string _buffString;
         std::getline(_fin, _buffString, columnSep);
+        if (_buffString.empty())
+            throw columnFailure(0);
 
         using currentType = typename std::tuple_element<0, std::tuple<Types...>>::type;
         _TuplePlacer<currentType, 0, Types...>::place(_buffString, to);
@@ -104,11 +108,11 @@ public:
             const int tupleLen = sizeof...(Types);
 
             _StringParser<tupleLen - 1, Types...> parser;
-            std::string _newLine = _parent->_getline(_shift, _lineSep);
-            std::stringstream _nextLine;
-            _nextLine << _newLine;
+            std::string _newLine = _parent->_getLine(_shift);
+            std::stringstream _lineStream;
+            _lineStream << _newLine;
             try {
-                parser.parse(_columnSep, _nextLine, _current);
+                parser.parse(_columnSep, _lineStream, _current);
             }
             catch (const columnFailure &num) {
                 throw readFailure(num._columnNumber, _shift);
@@ -134,7 +138,7 @@ private:
     bool _endOfStream() {
         return _fin.eof();
     }
-    std::string _getline(int index, char lineSep) {
+    std::string _getLine(int index) {
         if (index == -1)
             return "";
 

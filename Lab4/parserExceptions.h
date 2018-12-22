@@ -25,7 +25,7 @@ class readFailure : public ParserExceptions {
 public:
     readFailure(int column, int line) : _columnNumber(column), _lineNumber(line) {
         std::stringstream result;
-        result << "Reading failure at " << _lineNumber << " line, at " << _columnNumber << " column";
+        result << "Reading failure at " << _lineNumber << " line " << _columnNumber << " column";
         std::string buff = result.str();
         _resultMessage = buff;
     };
