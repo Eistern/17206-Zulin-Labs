@@ -7,6 +7,20 @@
 #include <tuple>
 #include "parserExceptions.h"
 
+template<typename Type, int Ind, class... Types> struct _TuplePlacer {
+    static void place(std::stringstream &_buffStream, std::tuple<Types...> &to) {
+        _buffStream >> std::get<Ind>(to);
+        if (_buffStream.fail())
+            throw columnFailure(Ind);
+    }
+};
+
+template<int Ind, class... Types> struct _TuplePlacer<std::string, Ind, Types...> {
+    static void place(std::stringstream &_buffStream, std::tuple<Types...> &to) {
+        std::get<Ind>(to) = _buffStream.str();
+    }
+};
+
 template<int Ind, class... Types> struct _StringParser {
     void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
         _StringParser<Ind - 1, Types...> prev;
@@ -17,9 +31,8 @@ template<int Ind, class... Types> struct _StringParser {
         std::getline(_fin, _buffString, columnSep);
         _buffStream << _buffString;
 
-        _buffStream >> std::get<Ind>(to);
-        if (_buffStream.fail())
-            throw columnFailure(Ind);
+        using currentType = typename std::tuple_element<Ind, std::tuple<Types...>>::type;
+        _TuplePlacer<currentType, Ind, Types...>::place(_buffStream, to);
     }
 };
 template<class... Types> struct _StringParser<0, Types...> {
@@ -29,9 +42,8 @@ template<class... Types> struct _StringParser<0, Types...> {
         std::getline(_fin, _buffString, columnSep);
         _buffStream << _buffString;
 
-        _buffStream >> std::get<0>(to);
-        if (_buffStream.fail())
-            throw columnFailure(0);
+        using currentType = typename std::tuple_element<0, std::tuple<Types...>>::type;
+        _TuplePlacer<currentType, 0, Types...>::place(_buffStream, to);
     }
 };
 
