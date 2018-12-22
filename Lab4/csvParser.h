@@ -8,7 +8,10 @@
 #include "parserExceptions.h"
 
 template<typename Type, int Ind, class... Types> struct _TuplePlacer {
-    static void place(std::stringstream &_buffStream, std::tuple<Types...> &to) {
+    static void place(std::string &_buffString, std::tuple<Types...> &to) {
+        std::stringstream _buffStream;
+        _buffStream << _buffString;
+
         _buffStream >> std::get<Ind>(to);
         if (_buffStream.fail())
             throw columnFailure(Ind);
@@ -16,8 +19,8 @@ template<typename Type, int Ind, class... Types> struct _TuplePlacer {
 };
 
 template<int Ind, class... Types> struct _TuplePlacer<std::string, Ind, Types...> {
-    static void place(std::stringstream &_buffStream, std::tuple<Types...> &to) {
-        std::get<Ind>(to) = _buffStream.str();
+    static void place(std::string &_buffString, std::tuple<Types...> &to) {
+        std::get<Ind>(to) = _buffString;
     }
 };
 
@@ -26,24 +29,20 @@ template<int Ind, class... Types> struct _StringParser {
         _StringParser<Ind - 1, Types...> prev;
         prev.parse(columnSep, _fin, to);
 
-        std::stringstream _buffStream;
         std::string _buffString;
         std::getline(_fin, _buffString, columnSep);
-        _buffStream << _buffString;
 
         using currentType = typename std::tuple_element<Ind, std::tuple<Types...>>::type;
-        _TuplePlacer<currentType, Ind, Types...>::place(_buffStream, to);
+        _TuplePlacer<currentType, Ind, Types...>::place(_buffString, to);
     }
 };
 template<class... Types> struct _StringParser<0, Types...> {
     void parse(char columnSep, std::stringstream &_fin, std::tuple<Types...> &to) {
-        std::stringstream _buffStream;
         std::string _buffString;
         std::getline(_fin, _buffString, columnSep);
-        _buffStream << _buffString;
 
         using currentType = typename std::tuple_element<0, std::tuple<Types...>>::type;
-        _TuplePlacer<currentType, 0, Types...>::place(_buffStream, to);
+        _TuplePlacer<currentType, 0, Types...>::place(_buffString, to);
     }
 };
 
@@ -119,7 +118,7 @@ public:
     friend class _ParserIterator;
 
     _ParserIterator begin() {
-        _fin.seekg(0, _fin.beg);
+        _fin.seekg(0, std::ios_base::beg);
 
         std::string buff;
         for (int i = 0; i < _defaultShift; i++)
@@ -141,7 +140,7 @@ private:
 
         std::string buff;
         if (index < _currentShift) {
-            _fin.seekg(0, _fin.beg);
+            _fin.seekg(0, std::ios_base::beg);
             for (int i = 0; i <= index; i++)
                 std::getline(_fin, buff, _lineSep);
             _currentShift = index + 1;
